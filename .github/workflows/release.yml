@@ -33,10 +33,12 @@ jobs:
           coverage: none
           tools: wp-cli
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 22
+          cache: pnpm
 
       - name: Verify tag matches every recorded version
         run: bin/check-version.sh "${GITHUB_REF_NAME}"
@@ -46,8 +48,8 @@ jobs:
 
       - name: Build assets
         run: |
-          npm ci
-          npm run build
+          pnpm install --frozen-lockfile
+          pnpm run build
 
       - name: Assemble and verify the ZIP
         run: bin/build-zip.sh

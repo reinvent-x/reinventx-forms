@@ -54,7 +54,7 @@ Repo scaffold, tooling, and the install/upgrade machinery everything else stands
   ARCHITECTURE §9.
 
 **Acceptance criteria:**
-- [x] `npm run env:start && composer install && npm run build` yields a working local site.
+- [x] `pnpm run env:start && composer install && pnpm run build` yields a working local site.
 - [x] Activating the plugin creates all three tables; `rvtx_schema_version` option = 1.
 - [x] Re-activating is idempotent (no errors, no duplicate work).
 - [x] Deactivate + reactivate preserves data; uninstall without opt-in preserves data;

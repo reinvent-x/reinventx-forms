@@ -1,9 +1,12 @@
 {
-	"phpVersion": "8.2",
-	"config": {
-		"DISALLOW_FILE_MODS": true
-	},
-	"mappings": {
-		"wp-content/plugins/reinventx-forms": "."
-	}
+    "phpVersion": "8.2",
+    "config": {
+        "DISALLOW_FILE_MODS": true
+    },
+    "plugins": [
+        "https://downloads.wordpress.org/plugin/plugin-check.latest-stable.zip"
+    ],
+    "mappings": {
+        "wp-content/plugins/reinventx-forms": "."
+    }
 }

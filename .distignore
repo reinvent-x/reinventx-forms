@@ -20,12 +20,13 @@ docs
 node_modules
 package.json
 package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
 phpcs.xml.dist
 phpstan.neon.dist
 postcss.config.js
 phpunit.integration.xml.dist
 phpunit.unit.xml.dist
-PROJECT_PLAN.md
 README.md
 tests
 tsconfig.json
