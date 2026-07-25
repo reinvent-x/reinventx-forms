@@ -33,7 +33,7 @@ jobs:
           coverage: none
           tools: wp-cli
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
       - uses: actions/setup-node@v7
         with:
