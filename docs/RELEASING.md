@@ -13,7 +13,7 @@
 4. Tag and push: `git tag vX.Y.Z && git push origin vX.Y.Z`.
 
 `release.yml` then verifies the version sync, builds production assets
-(`composer install --no-dev --optimize-autoloader`, `npm ci && npm run build`),
+(`composer install --no-dev --optimize-autoloader`, `pnpm install --frozen-lockfile && pnpm run build`),
 assembles `dist/reinventx-forms.zip` honoring `.distignore`, proves the ZIP contains
 no sources/tests/CI files, installs and activates it on a clean WordPress with
 wp-cli (tables, schema option, and capabilities asserted), and attaches the ZIP
@@ -23,7 +23,7 @@ to a GitHub Release. A failure at any step means no release is published.
 
 Install/activate/schema on a clean WordPress is verified automatically by the
 release workflow against the actual ZIP; this checklist covers the human flows
-it cannot click through. Run it on a clean site (`npm run env:start`, empty
+it cannot click through. Run it on a clean site (`pnpm run env:start`, empty
 DB). When QA'ing the packaged artifact itself, use the ZIP from the release
 workflow run rather than the mounted source tree.
 

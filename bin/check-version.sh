@@ -8,6 +8,8 @@ set -euo pipefail
 TAG="${1:?usage: bin/check-version.sh vX.Y.Z}"
 VERSION="${TAG#v}"
 
+cd "$(dirname "$0")/.."
+
 fail=0
 
 check() {
@@ -22,9 +24,11 @@ check() {
 }
 
 header=$(sed -n 's/^ \* Version:[[:space:]]*//p' reinventx-forms.php | tr -d '[:space:]')
-constant=$(sed -n "s/^define( 'REINVENTX_VERSION', '\(.*\)' );$/\1/p" reinventx-forms.php)
+constant=$(sed -n "s/.*REINVENTX_VERSION'[[:space:]]*,[[:space:]]*'\([^']*\)'.*/\1/p" reinventx-forms.php)
 stable=$(sed -n 's/^Stable tag:[[:space:]]*//p' readme.txt | tr -d '[:space:]')
-package=$(sed -n 's/^\t"version": "\(.*\)",$/\1/p' package.json)
+# Parsed as JSON, not as text: a reformat (tabs vs spaces, key order) must
+# never silently blank this out and turn a real mismatch into a pass.
+package=$(node -p "require('./package.json').version")
 
 check "plugin header"      "$header"
 check "REINVENTX_VERSION"  "$constant"

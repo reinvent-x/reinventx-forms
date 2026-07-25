@@ -2,14 +2,14 @@
 # Assembles the release ZIP honoring .distignore. Expects production
 # artifacts to exist already:
 #   composer install --no-dev --optimize-autoloader
-#   npm ci && npm run build
+#   pnpm install --frozen-lockfile && pnpm run build
 #
 # Output: dist/reinventx-forms.zip (contains a single reinventx-forms/ directory).
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-test -f build/admin.js || { echo "build/admin.js missing — run npm run build"; exit 1; }
+test -f build/admin.js || { echo "build/admin.js missing — run pnpm run build"; exit 1; }
 test -f vendor/autoload.php || { echo "vendor/autoload.php missing — run composer install"; exit 1; }
 
 if [ -d vendor/phpunit ]; then

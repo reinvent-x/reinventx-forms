@@ -316,7 +316,7 @@ type has integration tests; every bug fix lands with a regression test.
 
 ## 9. DevOps & Release
 
-- **Local dev:** `wp-env` — `npm run env:start` gives WordPress + MySQL in Docker
+- **Local dev:** `wp-env` — `pnpm run env:start` gives WordPress + MySQL in Docker
   with the plugin mounted. Same image family CI uses. No bespoke Docker compose.
 - **CI (GitHub Actions, on PR + main):**
   1. PHP job: composer validate, PHPCS, PHPStan, unit tests — matrix PHP 8.1/8.3.
@@ -327,7 +327,7 @@ type has integration tests; every bug fix lands with a regression test.
 - **Release (tag-triggered `release.yml`):**
   1. Tag `vX.Y.Z` → verify tag matches plugin header + readme stable tag.
   2. `composer install --no-dev --optimize-autoloader` (autoloader ships; dev deps never do).
-  3. `npm ci && npm run build`.
+  3. `pnpm install --frozen-lockfile && pnpm run build`.
   4. Assemble ZIP honoring `.distignore` (no `client/` sources, tests, configs, CI files).
   5. Smoke-check the ZIP: install & activate in a clean wp-env container.
   6. Attach ZIP to a GitHub Release. (WordPress.org SVN deploy step added if/when we list there.)

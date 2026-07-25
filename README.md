@@ -6,7 +6,7 @@ form plugin.
 
 **Status:** v0.1.0 is feature-complete and in final QA — **no release has been
 tagged yet**. The first tag will ship everything below.
-Planning docs: [`PROJECT_PLAN.md`](PROJECT_PLAN.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md),
+Planning docs: [`docs/PROJECT_PLAN.md`](docs/PROJECT_PLAN.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md),
 [`docs/MILESTONES.md`](docs/MILESTONES.md), [`docs/RELEASING.md`](docs/RELEASING.md).
 
 ## What Reinventx Forms does
@@ -35,9 +35,9 @@ Planning docs: [`PROJECT_PLAN.md`](PROJECT_PLAN.md), [`docs/ARCHITECTURE.md`](do
 
 ```bash
 composer install
-npm install
-npm run build        # compile admin + public + block bundles into build/
-npm run env:start    # start WordPress at http://localhost:8888 and activate Reinventx Forms
+pnpm install
+pnpm run build        # compile admin + public + block bundles into build/
+pnpm run env:start    # start WordPress at http://localhost:8888 and activate Reinventx Forms
 ```
 
 Log in at `http://localhost:8888/wp-admin` — username `admin`, password `password`.
@@ -59,15 +59,15 @@ docker run --rm -v "$PWD":/app -w /app composer:2 composer install
 
 | Command | What it does |
 |---|---|
-| `npm run start` | Watch-mode JS build |
-| `npm run typecheck` | TypeScript type checking |
-| `npm run lint:js` | ESLint (WordPress config) |
+| `pnpm run start` | Watch-mode JS build |
+| `pnpm run typecheck` | TypeScript type checking |
+| `pnpm run lint:js` | ESLint (WordPress config) |
 | `composer lint` | PHPCS (WordPress security + best-practice sniffs) |
 | `composer stan` | PHPStan static analysis (level 8, WordPress stubs) |
 | `composer test:unit` | PHP unit tests (no WordPress loaded) |
-| `npm run test:php` | Integration tests against real WordPress + MySQL (wp-env must be running) |
+| `pnpm run test:php` | Integration tests against real WordPress + MySQL (wp-env must be running) |
 | `composer check` | lint + stan + unit tests in one go |
-| `npm run env:stop` | Stop the local environment |
+| `pnpm run env:stop` | Stop the local environment |
 
 ## Trying it with fixture data
 

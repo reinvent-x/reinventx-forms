@@ -48,10 +48,10 @@ The reply to the plugins team must **explicitly request the new slug**
 - [ ] **Quality gates** (all must pass — see README for the Docker equivalents
       if the host has no PHP/Node):
   - [ ] `composer check` (PHPCS, PHPStan level 8, unit tests)
-  - [ ] `npm run typecheck`
-  - [ ] `npm run lint:js`
-  - [ ] `npm run build`
-  - [ ] `npm run test:php` (where wp-env is available)
+  - [ ] `pnpm run typecheck`
+  - [ ] `pnpm run lint:js`
+  - [ ] `pnpm run build`
+  - [ ] `pnpm run test:php` (where wp-env is available)
 - [ ] **Create the release ZIP from a tag** (`git tag vX.Y.Z && git push origin vX.Y.Z`)
       and let `release.yml` produce it — it enforces version sync, `.distignore`
       leak checks, and a clean-install smoke test. Do not hand-roll the ZIP.
