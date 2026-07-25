@@ -104,8 +104,12 @@ jobs:
       - name: Install pnpm dependencies
         run: pnpm install --frozen-lockfile
 
+      # Via the script, not `wp-env start` directly: it sets
+      # COMPOSE_PROJECT_NAME, and test:php sets the same one. Starting the
+      # environment under a different project name than the tests look for
+      # is what "service tests-cli is not running" means.
       - name: Start wp-env
-        run: pnpm exec wp-env start
+        run: pnpm env:start
 
       - name: Run integration tests
         run: pnpm run test:php
