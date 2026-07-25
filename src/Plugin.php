@@ -16,6 +16,7 @@ use Reinventx\Http\SubmissionsController;
 use Reinventx\Leads\LeadNoteRepository;
 use Reinventx\Leads\LeadRepository;
 use Reinventx\Leads\LeadStatusService;
+use Reinventx\Privacy\PersonalData;
 use Reinventx\Rendering\FormEmbed;
 use Reinventx\Rendering\FormRenderer;
 use Reinventx\Rendering\Shortcode;
@@ -67,6 +68,23 @@ final class Plugin {
 
 		add_action( 'rest_api_init', array( $this, 'registerRestRoutes' ) );
 		add_action( 'init', array( $this, 'registerEmbeds' ) );
+
+		// Leads are personal data, so core's Tools → Export/Erase Personal
+		// Data must be able to reach them. Registered on init because the
+		// repositories need $wpdb->prefix to be settled.
+		add_action( 'init', array( $this, 'registerPrivacyHooks' ) );
+	}
+
+	public function registerPrivacyHooks(): void {
+		global $wpdb;
+
+		$tables = new Tables( $wpdb->prefix );
+
+		( new PersonalData(
+			new LeadRepository( $wpdb, $tables ),
+			new LeadNoteRepository( $wpdb, $tables ),
+			new FormRepository( $wpdb, $tables, FieldTypeRegistry::withDefaults() )
+		) )->register();
 	}
 
 	public function registerRestRoutes(): void {

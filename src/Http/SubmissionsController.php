@@ -68,9 +68,7 @@ final class SubmissionsController {
 		$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? (string) wp_unslash( $_SERVER['REMOTE_ADDR'] ) : null;
 
 		/** This filter is documented in src/Rendering/FormEmbed.php. */
-		if ( ! apply_filters( 'rvtx_store_ip_hash', true ) ) {
-			$ip = null;
-		}
+		$store_ip_hash = (bool) apply_filters( 'rvtx_store_ip_hash', true );
 
 		$context = SubmissionContext::fromRaw(
 			is_string( $source_url ) ? esc_url_raw( $source_url ) : null,
@@ -78,7 +76,8 @@ final class SubmissionsController {
 			$request->get_header( 'referer' ),
 			$request->get_header( 'user-agent' ),
 			$ip,
-			wp_salt( 'auth' )
+			wp_salt( 'auth' ),
+			$store_ip_hash
 		);
 
 		$outcome = $this->handler->handle(

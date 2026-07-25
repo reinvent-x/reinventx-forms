@@ -4,7 +4,7 @@ Tags: form, contact form, leads, lead management, crm
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,7 @@ Reinventx Forms is a standalone form and lead management plugin. It does not dep
 * **Every lead lands in your inbox** with its source context: the page URL and title it came from, the referrer, and the submission time.
 * **Track the follow-up**: statuses (new, contacted, qualified, won, lost, spam) and internal notes with author attribution.
 * **Spam resistance built in**: honeypot, signed time-trap token (cache-safe), and rate limiting — no third-party service.
-* **Privacy-aware**: visitor IP addresses are never stored, only a keyed hash used for rate limiting.
+* **Privacy-aware**: visitor IP addresses are never stored, only a keyed hash — and leads work with WordPress's built-in personal-data export and erasure tools. See the Privacy section for exactly what a lead can contain.
 
 Email notifications are not included yet — leads are collected in the Reinventx Forms inbox inside wp-admin (notifications are the first item on the 0.2 roadmap).
 
@@ -53,6 +53,26 @@ https://github.com/reinvent-x/reinventx-forms
 
 The WordPress.org release ZIP contains the built plugin assets. To build from source, see the repository README.
 
+== Privacy ==
+
+Reinventx Forms stores form submissions as leads in your site's own database. Nothing is sent to any third-party service, and the plugin makes no external network requests.
+
+Depending on the form and how it is embedded, a stored lead may include:
+
+* The values the visitor entered into the form.
+* The URL and page title the form was submitted from.
+* The HTTP referrer sent by the visitor's browser.
+* The visitor's browser user-agent string.
+* A keyed hash derived from the visitor's IP address.
+
+Raw IP addresses are never stored. The stored value is an HMAC hash, and it can be switched off entirely with the `rvtx_store_ip_hash` filter — per-client rate limiting keeps working either way, because it uses a separate short-lived hash that is never written to the database.
+
+Referrer and source URLs are stored as the browser reports them. If pages on your site carry sensitive information in query strings, consider filtering or shortening what is recorded.
+
+Leads are integrated with WordPress's built-in privacy tools. Under Tools → Export Personal Data, a request for an email address returns every lead containing that address, including its form, submitted values, and source context. Under Tools → Erase Personal Data, those leads and any internal notes attached to them are deleted.
+
+Site owners are responsible for describing this collection in their own privacy policy and for setting an appropriate retention practice.
+
 == Screenshots ==
 
 1. Forms list.
@@ -63,11 +83,19 @@ The WordPress.org release ZIP contains the built plugin assets. To build from so
 
 == Changelog ==
 
+= 0.1.1 =
+* Added: leads are now covered by WordPress's personal-data tools — Tools → Export Personal Data returns a person's leads, and Tools → Erase Personal Data deletes them along with any internal notes.
+* Fixed: returning false from `rvtx_store_ip_hash` no longer disables per-client rate limiting. Rate limiting now uses its own short-lived hash that is never stored, so opting out of IP storage is a privacy choice rather than a reduction in abuse protection.
+* Added: a Privacy section documenting exactly what a stored lead can contain.
+
 = 0.1.0 =
 * Initial release: form builder (text/email/paragraph fields), block + shortcode embedding, server-rendered public form with progressive enhancement, spam guards (honeypot, time-trap token, rate limit), lead inbox with source context, statuses (new, contacted, qualified, won, lost, spam), and notes.
 * Privacy and tuning filters: `rvtx_store_ip_hash` (return false to store nothing IP-derived; also disables per-client rate limiting, which keys on the hash) and `rvtx_rate_limit_max` (submissions-per-minute threshold).
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+Adds WordPress personal-data export and erasure for leads, and fixes rate limiting being disabled when IP-hash storage is turned off.
 
 = 0.1.0 =
 Initial release.
