@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Unit\Leads;
+namespace Reinventx\Tests\Unit\Leads;
 
-use FormInbox\Leads\LeadStatuses;
+use Reinventx\Leads\LeadStatuses;
 use PHPUnit\Framework\TestCase;
 
 final class LeadStatusesTest extends TestCase {

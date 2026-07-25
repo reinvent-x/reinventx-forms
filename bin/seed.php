@@ -8,17 +8,17 @@
  *
  * Run:
  *
- *   wp eval-file wp-content/plugins/forminbox/bin/seed.php
+ *   wp eval-file wp-content/plugins/reinventx-forms/bin/seed.php
  *
  * Creates realistic demo content — three forms and a spread of leads with
  * statuses, source context, and notes — suitable for exercising inbox
  * filtering/pagination and for taking directory screenshots.
  */
 
-use FormInbox\Database\Tables;
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\FormConfig;
-use FormInbox\Forms\FormRepository;
+use Reinventx\Database\Tables;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\FormConfig;
+use Reinventx\Forms\FormRepository;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Run via: wp eval-file bin/seed.php' . PHP_EOL );
@@ -106,7 +106,7 @@ $leads = array(
 		array(
 			'name'    => 'Daniel Okafor',
 			'email'   => 'd.okafor@brightpath.co',
-			'message' => 'Interested in using FormInbox on three client sites. Is there a limit on the number of forms?',
+			'message' => 'Interested in using Reinventx Forms on three client sites. Is there a limit on the number of forms?',
 		),
 		'Contact us',
 		null,
@@ -218,7 +218,7 @@ $leads = array(
 			'message' => 'Clinic with two locations. We want each location page to have its own form but one shared inbox — is that supported?',
 		),
 		'Contact us',
-		'https://www.bing.com/search?q=forminbox',
+		'https://www.bing.com/search?q=reinventx-forms',
 	),
 	array(
 		$newsletter,

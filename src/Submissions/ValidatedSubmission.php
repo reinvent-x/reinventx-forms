@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Submissions;
+namespace Reinventx\Submissions;
 
 /**
  * Result of running raw input through SubmissionValidator.

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Setup;
+namespace Reinventx\Setup;
 
-use FormInbox\Database\Migrator;
-use FormInbox\Database\Tables;
+use Reinventx\Database\Migrator;
+use Reinventx\Database\Tables;
 
 /**
  * Runs on plugin uninstall (from uninstall.php).
@@ -15,7 +15,7 @@ use FormInbox\Database\Tables;
  */
 final class Uninstaller {
 
-	public const DELETE_DATA_OPTION = 'forminbox_delete_data_on_uninstall';
+	public const DELETE_DATA_OPTION = 'rvtx_delete_data_on_uninstall';
 
 	public static function uninstall(): void {
 		if ( ! get_option( self::DELETE_DATA_OPTION ) ) {

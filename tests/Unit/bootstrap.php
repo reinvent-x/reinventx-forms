@@ -5,7 +5,7 @@
  * Code under unit test must not call WordPress functions. If a class needs
  * WordPress, it gets an integration test instead.
  *
- * @package FormInbox
+ * @package Reinventx
  */
 
 declare(strict_types=1);

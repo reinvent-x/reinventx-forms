@@ -5,7 +5,7 @@
  * Defaults target the containers wp-env creates; every value can be
  * overridden via environment variables (used by CI).
  *
- * @package FormInbox
+ * @package Reinventx
  */
 
 define( 'ABSPATH', ( getenv( 'WP_TESTS_ABSPATH' ) ?: '/var/www/html' ) . '/' );
@@ -21,7 +21,7 @@ $table_prefix = 'wptests_';
 
 define( 'WP_TESTS_DOMAIN', 'example.org' );
 define( 'WP_TESTS_EMAIL', 'admin@example.org' );
-define( 'WP_TESTS_TITLE', 'FormInbox Test Suite' );
+define( 'WP_TESTS_TITLE', 'Reinventx Forms Test Suite' );
 define( 'WP_PHP_BINARY', 'php' );
 
 define( 'WP_DEBUG', true );

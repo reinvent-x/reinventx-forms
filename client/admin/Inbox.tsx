@@ -54,7 +54,7 @@ export default function Inbox( { onOpenLead }: Props ) {
 			setError(
 				isApiError( e )
 					? e.message
-					: __( 'Could not load leads.', 'forminbox' )
+					: __( 'Could not load leads.', 'reinventx-forms' )
 			);
 		}
 	}, [ page, formId, status ] );
@@ -75,13 +75,16 @@ export default function Inbox( { onOpenLead }: Props ) {
 						} }
 					>
 						<SelectTrigger
-							aria-label={ __( 'Filter by form', 'forminbox' ) }
+							aria-label={ __(
+								'Filter by form',
+								'reinventx-forms'
+							) }
 						>
 							<SelectValue />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectItem value={ ALL }>
-								{ __( 'All forms', 'forminbox' ) }
+								{ __( 'All forms', 'reinventx-forms' ) }
 							</SelectItem>
 							{ forms.map( ( form ) => (
 								<SelectItem
@@ -106,13 +109,16 @@ export default function Inbox( { onOpenLead }: Props ) {
 						} }
 					>
 						<SelectTrigger
-							aria-label={ __( 'Filter by status', 'forminbox' ) }
+							aria-label={ __(
+								'Filter by status',
+								'reinventx-forms'
+							) }
 						>
 							<SelectValue />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectItem value={ ALL }>
-								{ __( 'All statuses', 'forminbox' ) }
+								{ __( 'All statuses', 'reinventx-forms' ) }
 							</SelectItem>
 							{ ( data?.statuses ?? [] ).map( ( option ) => (
 								<SelectItem key={ option } value={ option }>
@@ -132,7 +138,7 @@ export default function Inbox( { onOpenLead }: Props ) {
 
 			{ data === null && ! error && (
 				<p className="text-muted-foreground">
-					{ __( 'Loading…', 'forminbox' ) }
+					{ __( 'Loading…', 'reinventx-forms' ) }
 				</p>
 			) }
 
@@ -141,7 +147,7 @@ export default function Inbox( { onOpenLead }: Props ) {
 					<p className="text-muted-foreground">
 						{ __(
 							'No leads yet. Publish a form and they will land here.',
-							'forminbox'
+							'reinventx-forms'
 						) }
 					</p>
 				</Card>
@@ -153,16 +159,19 @@ export default function Inbox( { onOpenLead }: Props ) {
 						<TableHeader>
 							<TableRow>
 								<TableHead>
-									{ __( 'Lead', 'forminbox' ) }
+									{ __( 'Lead', 'reinventx-forms' ) }
 								</TableHead>
 								<TableHead>
-									{ __( 'Form', 'forminbox' ) }
+									{ __( 'Form', 'reinventx-forms' ) }
 								</TableHead>
 								<TableHead>
-									{ __( 'Status', 'forminbox' ) }
+									{ __( 'Status', 'reinventx-forms' ) }
 								</TableHead>
 								<TableHead>
-									{ __( 'Submitted (UTC)', 'forminbox' ) }
+									{ __(
+										'Submitted (UTC)',
+										'reinventx-forms'
+									) }
 								</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -187,7 +196,7 @@ export default function Inbox( { onOpenLead }: Props ) {
 													/* translators: %d: lead id. */
 													__(
 														'Lead #%d',
-														'forminbox'
+														'reinventx-forms'
 													),
 													lead.id
 												) }
@@ -220,7 +229,10 @@ export default function Inbox( { onOpenLead }: Props ) {
 					<p className="text-sm text-muted-foreground">
 						{ sprintf(
 							/* translators: 1: current page, 2: total pages, 3: total leads. */
-							__( 'Page %1$d of %2$d (%3$d leads)', 'forminbox' ),
+							__(
+								'Page %1$d of %2$d (%3$d leads)',
+								'reinventx-forms'
+							),
 							data.page,
 							data.total_pages,
 							data.total
@@ -234,7 +246,7 @@ export default function Inbox( { onOpenLead }: Props ) {
 							onClick={ () => setPage( ( p ) => p - 1 ) }
 						>
 							<ChevronLeft />
-							{ __( 'Previous', 'forminbox' ) }
+							{ __( 'Previous', 'reinventx-forms' ) }
 						</Button>
 						<Button
 							variant="outline"
@@ -242,7 +254,7 @@ export default function Inbox( { onOpenLead }: Props ) {
 							disabled={ page >= data.total_pages }
 							onClick={ () => setPage( ( p ) => p + 1 ) }
 						>
-							{ __( 'Next', 'forminbox' ) }
+							{ __( 'Next', 'reinventx-forms' ) }
 							<ChevronRight />
 						</Button>
 					</div>

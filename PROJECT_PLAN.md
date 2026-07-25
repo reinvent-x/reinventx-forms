@@ -1,4 +1,4 @@
-# FormInbox — Project Plan
+# Reinventx Forms — Project Plan
 
 **Status:** v0.1 feature-complete; v0.1.0 release pending final QA · **Version target:** 0.1.0 · **Plan date:** 2026-07-02
 
@@ -6,7 +6,7 @@
 
 ## 1. Product Goal
 
-FormInbox is a **standalone form and lead management plugin** for WordPress. It owns the
+Reinventx Forms is a **standalone form and lead management plugin** for WordPress. It owns the
 entire flow — form creation, rendering, submission handling, lead storage, and follow-up
 tracking — with **zero dependency on any other form plugin**.
 
@@ -33,9 +33,9 @@ Build a plugin that a small team can maintain for years:
 ## 3. MVP Scope (v0.1 — one complete vertical slice)
 
 - [ ] Plugin installs and activates cleanly; custom tables created; schema versioned.
-- [ ] Admin menu "FormInbox" exists; React admin app loads.
+- [ ] Admin menu "Reinventx Forms" exists; React admin app loads.
 - [ ] Admin can create a basic form (name + fields: text, email, textarea; required flag).
-- [ ] Form renders on any page via shortcode `[forminbox id="…"]` and a dynamic
+- [ ] Form renders on any page via shortcode `[rvtx_form id="…"]` and a dynamic
       Gutenberg block (both share one server-side render pipeline).
 - [ ] Visitor can submit the form (AJAX with no-JS `<form>` POST semantics preserved).
 - [ ] Submission is validated (server-side, per field type), sanitized, and stored.
@@ -70,26 +70,26 @@ says otherwise, it slots into Milestone 5 without touching architecture.
 | Area | Decision |
 |---|---|
 | Repository | **Single-plugin repo**, not a multi-package monorepo. Monorepo-ready conventions so a Pro plugin can join later. |
-| PHP | 8.1 minimum (host reality), typed, `FormInbox\` namespace, PSR-4 via Composer. |
+| PHP | 8.1 minimum (host reality), typed, `Reinventx\` namespace, PSR-4 via Composer. |
 | Runtime PHP deps | **None bundled.** Composer is for autoloading + dev tooling only. Avoids dependency conflicts between plugins. |
 | WordPress | Min WP 6.6 (core ships the `react-jsx-runtime` handle wp-scripts targets); test against latest and latest−1. |
 | Admin UI | React + TypeScript SPA on a single admin page, built with `@wordpress/scripts`. UI: **shadcn/ui + Tailwind, vendored, brand-black theme** (M1.5; isolation rules in ARCHITECTURE §4). `api-fetch`/`i18n` stay WP externals. |
 | Public form | Server-rendered PHP templates + one small vanilla-TS script (~few KB). No framework. |
 | Embedding | Shortcode + dynamic block, one shared render callback. |
 | Data | Custom tables: `forms`, `leads`, `lead_notes`. Form field config and lead payloads as JSON columns. No CPT, no EAV. |
-| API | WP REST API, namespace `forminbox/v1`. Cookie+nonce auth for admin; unauthenticated public submission endpoint hardened separately. |
+| API | WP REST API, namespace `reinventx-forms/v1`. Cookie+nonce auth for admin; unauthenticated public submission endpoint hardened separately. |
 | Testing | PHPUnit (unit + wp-env integration), PHPStan (wordpress stubs), PHPCS (WordPress ruleset), ESLint/Prettier via wp-scripts. Playwright E2E deferred to post-0.1. |
 | Local dev | `wp-env` (Docker). One command to a running site. |
 | CI/CD | GitHub Actions: lint + static analysis + tests on PR; tag-triggered release builds the distributable ZIP. |
 
 ## 6. Open Questions (need founder input; defaults chosen so work isn't blocked)
 
-1. **Naming:** ~~directory is `form-indox`~~ **Resolved:** slug `forminbox`,
-   text domain `forminbox`, namespace `FormInbox`, table prefix `forminbox_`.
+1. **Naming:** ~~directory is `form-indox`~~ **Resolved:** slug `reinventx-forms`,
+   text domain `reinventx-forms`, namespace `Reinventx Forms`, table prefix `rvtx_`.
 2. **IP address storage:** GDPR-relevant. Default: store IP truncated/hashed, with a
    filter to disable entirely. Confirm target market's privacy posture.
 3. **Email notifications in 0.1?** Currently cut (see Non-Goals). Cheap to add
-   (`wp_mail` on a `forminbox_lead_created` action) if the promise feels broken without it.
+   (`wp_mail` on a `rvtx_lead_created` action) if the promise feels broken without it.
 4. **WordPress.org distribution vs. self-distributed?** Affects readme.txt, GPL
    compliance of all assets, and review-queue constraints. Default assumption: aim for
    .org compatibility from day one (it enforces good hygiene either way).

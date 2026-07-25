@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Database;
+namespace Reinventx\Database;
 
 /**
  * Schema v1 table definitions in dbDelta-compatible form.

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Rendering;
+namespace Reinventx\Rendering;
 
 /**
  * What the renderer should show besides the blank form: a success message

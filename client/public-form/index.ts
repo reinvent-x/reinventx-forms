@@ -1,5 +1,5 @@
 /**
- * Progressive enhancement for FormInbox public forms.
+ * Progressive enhancement for Reinventx Forms public forms.
  *
  * Must stay framework-free and dependency-free: this file is the entire
  * public payload (ARCHITECTURE §4). Without it, the form still POSTs back
@@ -17,7 +17,7 @@ interface ErrorBody {
 }
 
 function enhance( form: HTMLFormElement ): void {
-	const endpoint = form.dataset.forminboxEndpoint;
+	const endpoint = form.dataset.rvtxEndpoint;
 
 	if ( ! endpoint ) {
 		return;
@@ -70,7 +70,7 @@ function payload( form: HTMLFormElement ): Record< string, unknown > {
 	const fields: Record< string, string > = {};
 
 	data.forEach( ( value, key ) => {
-		const match = key.match( /^forminbox_fields\[(.+)\]$/ );
+		const match = key.match( /^rvtx_fields\[(.+)\]$/ );
 
 		if ( match ) {
 			fields[ match[ 1 ] ] = String( value );
@@ -78,12 +78,12 @@ function payload( form: HTMLFormElement ): Record< string, unknown > {
 	} );
 
 	return {
-		form_id: Number( data.get( 'forminbox_form_id' ) ),
-		token: String( data.get( 'forminbox_token' ) ?? '' ),
-		issued_at: Number( data.get( 'forminbox_issued_at' ) ),
-		website: String( data.get( 'forminbox_website' ) ?? '' ),
-		source_url: String( data.get( 'forminbox_source_url' ) ?? '' ),
-		source_title: String( data.get( 'forminbox_source_title' ) ?? '' ),
+		form_id: Number( data.get( 'rvtx_form_id' ) ),
+		token: String( data.get( 'rvtx_token' ) ?? '' ),
+		issued_at: Number( data.get( 'rvtx_issued_at' ) ),
+		website: String( data.get( 'rvtx_website' ) ?? '' ),
+		source_url: String( data.get( 'rvtx_source_url' ) ?? '' ),
+		source_title: String( data.get( 'rvtx_source_title' ) ?? '' ),
 		fields,
 	};
 }
@@ -93,19 +93,17 @@ function hasFieldErrors( body: ErrorBody ): boolean {
 }
 
 function clearErrors( form: HTMLFormElement ): void {
-	form.querySelectorAll< HTMLElement >(
-		'[data-forminbox-error-for]'
-	).forEach( ( el ) => {
-		el.hidden = true;
-		el.textContent = '';
-	} );
+	form.querySelectorAll< HTMLElement >( '[data-rvtx-error-for]' ).forEach(
+		( el ) => {
+			el.hidden = true;
+			el.textContent = '';
+		}
+	);
 	form.querySelectorAll< HTMLElement >( '[aria-invalid]' ).forEach( ( el ) =>
 		el.removeAttribute( 'aria-invalid' )
 	);
 
-	const message = form.querySelector< HTMLElement >(
-		'[data-forminbox-message]'
-	);
+	const message = form.querySelector< HTMLElement >( '[data-rvtx-message]' );
 
 	if ( message ) {
 		message.hidden = true;
@@ -118,7 +116,7 @@ function renderErrors( form: HTMLFormElement, body: ErrorBody ): void {
 
 	Object.keys( messages ).forEach( ( fieldId ) => {
 		const error = form.querySelector< HTMLElement >(
-			`[data-forminbox-error-for="${ fieldId }"]`
+			`[data-rvtx-error-for="${ fieldId }"]`
 		);
 
 		if ( error ) {
@@ -127,7 +125,7 @@ function renderErrors( form: HTMLFormElement, body: ErrorBody ): void {
 		}
 
 		const field = form.querySelector< HTMLElement >(
-			`[data-forminbox-field="${ fieldId }"] input, [data-forminbox-field="${ fieldId }"] textarea`
+			`[data-rvtx-field="${ fieldId }"] input, [data-rvtx-field="${ fieldId }"] textarea`
 		);
 
 		if ( field ) {
@@ -136,7 +134,7 @@ function renderErrors( form: HTMLFormElement, body: ErrorBody ): void {
 	} );
 
 	const first = form.querySelector< HTMLElement >(
-		'[data-forminbox-error-for]:not([hidden])'
+		'[data-rvtx-error-for]:not([hidden])'
 	);
 
 	if ( first ) {
@@ -145,7 +143,7 @@ function renderErrors( form: HTMLFormElement, body: ErrorBody ): void {
 }
 
 function showMessage( form: HTMLFormElement, text: string ): void {
-	const el = form.querySelector< HTMLElement >( '[data-forminbox-message]' );
+	const el = form.querySelector< HTMLElement >( '[data-rvtx-message]' );
 
 	if ( el ) {
 		el.textContent = text;
@@ -156,7 +154,7 @@ function showMessage( form: HTMLFormElement, text: string ): void {
 function showSuccess( form: HTMLFormElement, text: string ): void {
 	const wrapper = document.createElement( 'div' );
 
-	wrapper.className = 'forminbox-form forminbox-success';
+	wrapper.className = 'rvtx-form rvtx-success';
 	wrapper.setAttribute( 'role', 'status' );
 	wrapper.textContent = text || genericSuccess( form );
 	form.replaceWith( wrapper );
@@ -166,20 +164,19 @@ function showSuccess( form: HTMLFormElement, text: string ): void {
 // supplies translated text.
 function genericError( form: HTMLFormElement ): string {
 	return (
-		form.dataset.forminboxErrorText ??
-		'Something went wrong. Please try again.'
+		form.dataset.rvtxErrorText ?? 'Something went wrong. Please try again.'
 	);
 }
 
 function genericSuccess( form: HTMLFormElement ): string {
 	return (
-		form.dataset.forminboxSuccessText ??
+		form.dataset.rvtxSuccessText ??
 		'Thanks! Your message has been received.'
 	);
 }
 
 document
-	.querySelectorAll< HTMLFormElement >( 'form[data-forminbox-form]' )
+	.querySelectorAll< HTMLFormElement >( 'form[data-rvtx-form]' )
 	.forEach( enhance );
 
 export {};

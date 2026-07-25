@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Database\Migrator;
-use FormInbox\Setup\Activator;
-use FormInbox\Setup\Capabilities;
-use FormInbox\Setup\Uninstaller;
+use Reinventx\Database\Migrator;
+use Reinventx\Setup\Activator;
+use Reinventx\Setup\Capabilities;
+use Reinventx\Setup\Uninstaller;
 
-final class UninstallTest extends FormInboxTestCase {
+final class UninstallTest extends ReinventxTestCase {
 
 	public function set_up(): void {
 		parent::set_up();

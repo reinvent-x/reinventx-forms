@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Submissions;
+namespace Reinventx\Submissions;
 
 /**
  * Signed timestamp token embedded in every rendered form.

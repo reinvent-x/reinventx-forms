@@ -1,8 +1,14 @@
 {
-    "name": "forminbox/forminbox",
+    "name": "meladsamuel/reinventx-forms",
     "description": "Standalone form and lead management plugin for WordPress.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Melad Samuel",
+            "email": "meladsamuel2@gmail.com"
+        }
+    ],
     "require": {
         "php": ">=8.1"
     },
@@ -18,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "FormInbox\\": "src/"
+            "Reinventx\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "FormInbox\\Tests\\": "tests/"
+            "Reinventx\\Tests\\": "tests/"
         }
     },
     "config": {

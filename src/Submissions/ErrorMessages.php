@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Submissions;
+namespace Reinventx\Submissions;
 
 /**
  * Maps machine error codes to visitor-facing sentences.
@@ -13,10 +13,10 @@ final class ErrorMessages {
 
 	public static function forCode( string $code ): string {
 		return match ( $code ) {
-			SubmissionValidator::ERROR_REQUIRED => __( 'This field is required.', 'forminbox' ),
-			'invalid_email' => __( 'Enter a valid email address.', 'forminbox' ),
-			'too_long' => __( 'This value is too long.', 'forminbox' ),
-			default => __( 'This value is not valid.', 'forminbox' ),
+			SubmissionValidator::ERROR_REQUIRED => __( 'This field is required.', 'reinventx-forms' ),
+			'invalid_email' => __( 'Enter a valid email address.', 'reinventx-forms' ),
+			'too_long' => __( 'This value is too long.', 'reinventx-forms' ),
+			default => __( 'This value is not valid.', 'reinventx-forms' ),
 		};
 	}
 

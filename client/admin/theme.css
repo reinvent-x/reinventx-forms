@@ -1,9 +1,9 @@
 /*
- * FormInbox admin design system (ARCHITECTURE §4, milestone M1.5).
+ * Reinventx Forms admin design system (ARCHITECTURE §4, milestone M1.5).
  *
  * Isolation strategy — this stylesheet loads inside wp-admin, so:
  *  - Tailwind's global preflight is NOT imported. A mini-reset below is
- *    scoped under #forminbox-admin; its id specificity beats wp-admin's
+ *    scoped under #rvtx-admin; its id specificity beats wp-admin's
  *    element selectors (forms.css, common.css) without touching them.
  *  - Utilities are emitted !important: wp-admin CSS is unlayered and would
  *    otherwise always win over our @layer rules.
@@ -18,7 +18,7 @@
 
 /* ---- Brand tokens: black primary on a neutral scale, light mode only. ---- */
 
-#forminbox-admin {
+#rvtx-admin {
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
 	--card: oklch(1 0 0);
@@ -69,7 +69,7 @@
 
 /* ---- Scoped mini-preflight (intentionally unlayered, see header). ---- */
 
-#forminbox-admin {
+#rvtx-admin {
 	font-family:
 		-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans,
 		Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
@@ -78,28 +78,28 @@
 	color: var(--foreground);
 }
 
-#forminbox-admin *,
-#forminbox-admin *::before,
-#forminbox-admin *::after {
+#rvtx-admin *,
+#rvtx-admin *::before,
+#rvtx-admin *::after {
 	box-sizing: border-box;
 	border: 0 solid var(--border);
 	margin: 0;
 	padding: 0;
 }
 
-#forminbox-admin h1,
-#forminbox-admin h2,
-#forminbox-admin h3,
-#forminbox-admin h4 {
+#rvtx-admin h1,
+#rvtx-admin h2,
+#rvtx-admin h3,
+#rvtx-admin h4 {
 	font-size: inherit;
 	font-weight: inherit;
 	color: inherit;
 }
 
-#forminbox-admin button,
-#forminbox-admin input,
-#forminbox-admin select,
-#forminbox-admin textarea {
+#rvtx-admin button,
+#rvtx-admin input,
+#rvtx-admin select,
+#rvtx-admin textarea {
 	font: inherit;
 	line-height: inherit;
 	color: inherit;
@@ -108,32 +108,32 @@
 	box-shadow: none;
 }
 
-#forminbox-admin button {
+#rvtx-admin button {
 	cursor: pointer;
 	appearance: none;
 }
 
-#forminbox-admin :focus {
+#rvtx-admin :focus {
 	outline: none;
 	box-shadow: none;
 }
 
-#forminbox-admin table {
+#rvtx-admin table {
 	border-collapse: collapse;
 	border-spacing: 0;
 	width: 100%;
 }
 
-#forminbox-admin ul,
-#forminbox-admin ol {
+#rvtx-admin ul,
+#rvtx-admin ol {
 	list-style: none;
 }
 
-#forminbox-admin a {
+#rvtx-admin a {
 	color: inherit;
 	text-decoration: none;
 }
 
-#forminbox-admin svg {
+#rvtx-admin svg {
 	display: block;
 }

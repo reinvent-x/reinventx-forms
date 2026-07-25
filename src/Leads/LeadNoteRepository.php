@@ -4,9 +4,9 @@ declare(strict_types=1);
 // phpcs:disable WordPress.DB.DirectDatabaseQuery -- This repository is the
 // one sanctioned home for direct queries against the lead notes table.
 
-namespace FormInbox\Leads;
+namespace Reinventx\Leads;
 
-use FormInbox\Database\Tables;
+use Reinventx\Database\Tables;
 use wpdb;
 
 /**

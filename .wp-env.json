@@ -4,6 +4,6 @@
 		"DISALLOW_FILE_MODS": true
 	},
 	"mappings": {
-		"wp-content/plugins/forminbox": "."
+		"wp-content/plugins/reinventx-forms": "."
 	}
 }

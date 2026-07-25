@@ -59,17 +59,17 @@ jobs:
           wp config create --dbname=wordpress --dbuser=root --dbpass=password --dbhost=127.0.0.1
           wp core install --url=http://localhost --title=Smoke \
             --admin_user=admin --admin_password=admin --admin_email=admin@example.com --skip-email
-          wp plugin install "${GITHUB_WORKSPACE}/dist/forminbox.zip" --activate
-          wp plugin is-active forminbox
-          test "$(wp db query "SHOW TABLES LIKE 'wp_forminbox%'" --skip-column-names | grep -c .)" -eq 3
-          test "$(wp option get forminbox_schema_version)" = "1"
-          wp cap list administrator | grep -q forminbox_manage_forms
+          wp plugin install "${GITHUB_WORKSPACE}/dist/reinventx-forms.zip" --activate
+          wp plugin is-active reinventx-forms
+          test "$(wp db query "SHOW TABLES LIKE 'wp_rvtx%'" --skip-column-names | grep -c .)" -eq 3
+          test "$(wp option get rvtx_schema_version)" = "1"
+          wp cap list administrator | grep -q rvtx_manage_forms
           echo "Smoke test passed."
 
       - name: Publish GitHub release with the ZIP
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${GITHUB_REF_NAME}" dist/forminbox.zip \
-            --title "FormInbox ${GITHUB_REF_NAME}" \
+          gh release create "${GITHUB_REF_NAME}" dist/reinventx-forms.zip \
+            --title "Reinventx Forms ${GITHUB_REF_NAME}" \
             --generate-notes

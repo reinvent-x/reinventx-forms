@@ -21,13 +21,13 @@ check() {
 	fi
 }
 
-header=$(sed -n 's/^ \* Version:[[:space:]]*//p' forminbox.php | tr -d '[:space:]')
-constant=$(sed -n "s/^define( 'FORMINBOX_VERSION', '\(.*\)' );$/\1/p" forminbox.php)
+header=$(sed -n 's/^ \* Version:[[:space:]]*//p' reinventx-forms.php | tr -d '[:space:]')
+constant=$(sed -n "s/^define( 'REINVENTX_VERSION', '\(.*\)' );$/\1/p" reinventx-forms.php)
 stable=$(sed -n 's/^Stable tag:[[:space:]]*//p' readme.txt | tr -d '[:space:]')
 package=$(sed -n 's/^\t"version": "\(.*\)",$/\1/p' package.json)
 
 check "plugin header"      "$header"
-check "FORMINBOX_VERSION"  "$constant"
+check "REINVENTX_VERSION"  "$constant"
 check "readme stable tag"  "$stable"
 check "package.json"       "$package"
 

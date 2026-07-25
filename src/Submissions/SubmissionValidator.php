@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Submissions;
+namespace Reinventx\Submissions;
 
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\FormConfig;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\FormConfig;
 
 /**
  * Runs raw visitor input through each field's sanitize → validate pipeline.

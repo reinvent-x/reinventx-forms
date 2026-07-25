@@ -29,7 +29,7 @@ export default function Settings() {
 				setError(
 					isApiError( e )
 						? e.message
-						: __( 'Could not load settings.', 'forminbox' )
+						: __( 'Could not load settings.', 'reinventx-forms' )
 				)
 			);
 	}, [] );
@@ -53,7 +53,7 @@ export default function Settings() {
 			setError(
 				isApiError( e )
 					? e.message
-					: __( 'Could not save the setting.', 'forminbox' )
+					: __( 'Could not save the setting.', 'reinventx-forms' )
 			);
 		} finally {
 			setSaving( false );
@@ -70,25 +70,27 @@ export default function Settings() {
 
 			{ settings === null && ! error && (
 				<p className="text-muted-foreground">
-					{ __( 'Loading…', 'forminbox' ) }
+					{ __( 'Loading…', 'reinventx-forms' ) }
 				</p>
 			) }
 
 			{ settings !== null && (
 				<Card>
 					<CardHeader>
-						<CardTitle>{ __( 'Data', 'forminbox' ) }</CardTitle>
+						<CardTitle>
+							{ __( 'Data', 'reinventx-forms' ) }
+						</CardTitle>
 						<CardDescription>
 							{ __(
-								'What happens to FormInbox data when the plugin is deleted.',
-								'forminbox'
+								'What happens to Reinventx Forms data when the plugin is deleted.',
+								'reinventx-forms'
 							) }
 						</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<div className="flex items-start gap-3">
 							<Switch
-								id="forminbox-delete-data"
+								id="rvtx-delete-data"
 								checked={ settings.delete_data_on_uninstall }
 								disabled={ saving }
 								onCheckedChange={ onToggle }
@@ -96,17 +98,17 @@ export default function Settings() {
 							<div className="flex flex-col gap-1">
 								<label
 									className="text-sm font-medium"
-									htmlFor="forminbox-delete-data"
+									htmlFor="rvtx-delete-data"
 								>
 									{ __(
 										'Delete all data on uninstall',
-										'forminbox'
+										'reinventx-forms'
 									) }
 								</label>
 								<p className="text-sm text-muted-foreground">
 									{ __(
 										'Off by default. When enabled, deleting the plugin permanently removes every form, lead, and note. When disabled, your data survives uninstall and reinstall.',
-										'forminbox'
+										'reinventx-forms'
 									) }
 								</p>
 							</div>

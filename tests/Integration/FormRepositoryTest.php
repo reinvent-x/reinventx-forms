@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\FormConfig;
-use FormInbox\Forms\FormRepository;
-use FormInbox\Forms\FormStatus;
-use FormInbox\Setup\Activator;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\FormConfig;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Forms\FormStatus;
+use Reinventx\Setup\Activator;
 
-final class FormRepositoryTest extends FormInboxTestCase {
+final class FormRepositoryTest extends ReinventxTestCase {
 
 	private FormRepository $repository;
 

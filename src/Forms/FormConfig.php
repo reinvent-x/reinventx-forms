@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Forms;
+namespace Reinventx\Forms;
 
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
 
 /**
  * A form's validated field configuration. Immutable.

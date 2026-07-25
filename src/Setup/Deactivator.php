@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Setup;
+namespace Reinventx\Setup;
 
 /**
  * Runs on plugin deactivation.

@@ -34,9 +34,9 @@ interface SaveError {
 }
 
 const FIELD_TYPES: Array< { type: FieldType; label: () => string } > = [
-	{ type: 'text', label: () => __( 'Text', 'forminbox' ) },
-	{ type: 'email', label: () => __( 'Email', 'forminbox' ) },
-	{ type: 'textarea', label: () => __( 'Paragraph', 'forminbox' ) },
+	{ type: 'text', label: () => __( 'Text', 'reinventx-forms' ) },
+	{ type: 'email', label: () => __( 'Email', 'reinventx-forms' ) },
+	{ type: 'textarea', label: () => __( 'Paragraph', 'reinventx-forms' ) },
 ];
 
 /**
@@ -55,28 +55,35 @@ function describeErrorCode( code: string ): string {
 	const reasons: Record< string, string > = {
 		id_invalid: __(
 			'the ID may only use letters, numbers, hyphens and underscores (max 64 characters).',
-			'forminbox'
+			'reinventx-forms'
 		),
 		id_duplicate: __(
 			'this ID is already used by another field.',
-			'forminbox'
+			'reinventx-forms'
 		),
 		label_invalid: __(
 			'a label is required (max 200 characters).',
-			'forminbox'
+			'reinventx-forms'
 		),
-		type_unknown: __( 'this field type is not supported.', 'forminbox' ),
+		type_unknown: __(
+			'this field type is not supported.',
+			'reinventx-forms'
+		),
 		required_not_boolean: __(
 			'the required flag must be on or off.',
-			'forminbox'
+			'reinventx-forms'
 		),
-		not_an_object: __( 'this field is malformed.', 'forminbox' ),
+		not_an_object: __( 'this field is malformed.', 'reinventx-forms' ),
 	};
 
 	const reason = reasons[ fieldMatch[ 2 ] ] ?? fieldMatch[ 2 ];
 
-	/* translators: 1: field position (1-based), 2: reason sentence. */
-	return sprintf( __( 'Field %1$d: %2$s', 'forminbox' ), position, reason );
+	return sprintf(
+		/* translators: 1: field position (1-based), 2: reason sentence. */
+		__( 'Field %1$d: %2$s', 'reinventx-forms' ),
+		position,
+		reason
+	);
 }
 
 function nextFieldId( fields: Field[] ): string {
@@ -120,7 +127,10 @@ export default function FormEditor( { formId, onDone }: Props ) {
 					setError( {
 						message: isApiError( e )
 							? e.message
-							: __( 'Could not load the form.', 'forminbox' ),
+							: __(
+									'Could not load the form.',
+									'reinventx-forms'
+							  ),
 						details: [],
 					} );
 					setLoading( false );
@@ -188,7 +198,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 			setError( {
 				message: isApiError( e )
 					? e.message
-					: __( 'Could not save the form.', 'forminbox' ),
+					: __( 'Could not save the form.', 'reinventx-forms' ),
 				details:
 					isApiError( e ) && e.data?.errors
 						? e.data.errors.map( describeErrorCode )
@@ -201,7 +211,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 	if ( loading ) {
 		return (
 			<p className="text-muted-foreground">
-				{ __( 'Loading…', 'forminbox' ) }
+				{ __( 'Loading…', 'reinventx-forms' ) }
 			</p>
 		);
 	}
@@ -210,8 +220,8 @@ export default function FormEditor( { formId, onDone }: Props ) {
 		<div className="flex max-w-3xl flex-col gap-6">
 			<h2 className="text-lg font-semibold">
 				{ formId === null
-					? __( 'New form', 'forminbox' )
-					: __( 'Edit form', 'forminbox' ) }
+					? __( 'New form', 'reinventx-forms' )
+					: __( 'Edit form', 'reinventx-forms' ) }
 			</h2>
 
 			{ error && (
@@ -231,18 +241,20 @@ export default function FormEditor( { formId, onDone }: Props ) {
 
 			<Card>
 				<CardHeader>
-					<CardTitle>{ __( 'Form details', 'forminbox' ) }</CardTitle>
+					<CardTitle>
+						{ __( 'Form details', 'reinventx-forms' ) }
+					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="flex max-w-sm flex-col gap-2">
 						<label
 							className="text-sm font-medium"
-							htmlFor="forminbox-form-name"
+							htmlFor="rvtx-form-name"
 						>
-							{ __( 'Form name', 'forminbox' ) }
+							{ __( 'Form name', 'reinventx-forms' ) }
 						</label>
 						<Input
-							id="forminbox-form-name"
+							id="rvtx-form-name"
 							value={ name }
 							maxLength={ 190 }
 							onChange={ ( e ) => setName( e.target.value ) }
@@ -253,11 +265,11 @@ export default function FormEditor( { formId, onDone }: Props ) {
 
 			<Card>
 				<CardHeader>
-					<CardTitle>{ __( 'Fields', 'forminbox' ) }</CardTitle>
+					<CardTitle>{ __( 'Fields', 'reinventx-forms' ) }</CardTitle>
 					<CardDescription>
 						{ __(
 							'Visitors fill these in. The ID names the answer in your inbox — keep it stable once the form is live.',
-							'forminbox'
+							'reinventx-forms'
 						) }
 					</CardDescription>
 				</CardHeader>
@@ -266,7 +278,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 						<p className="text-sm text-muted-foreground">
 							{ __(
 								'No fields yet — add one below.',
-								'forminbox'
+								'reinventx-forms'
 							) }
 						</p>
 					) }
@@ -279,12 +291,12 @@ export default function FormEditor( { formId, onDone }: Props ) {
 							<div className="flex min-w-40 flex-1 flex-col gap-1.5">
 								<label
 									className="text-xs font-medium text-muted-foreground"
-									htmlFor={ `forminbox-field-label-${ index }` }
+									htmlFor={ `rvtx-field-label-${ index }` }
 								>
-									{ __( 'Label', 'forminbox' ) }
+									{ __( 'Label', 'reinventx-forms' ) }
 								</label>
 								<Input
-									id={ `forminbox-field-label-${ index }` }
+									id={ `rvtx-field-label-${ index }` }
 									value={ field.label }
 									maxLength={ 200 }
 									onChange={ ( e ) =>
@@ -297,12 +309,12 @@ export default function FormEditor( { formId, onDone }: Props ) {
 							<div className="flex w-36 flex-col gap-1.5">
 								<label
 									className="text-xs font-medium text-muted-foreground"
-									htmlFor={ `forminbox-field-id-${ index }` }
+									htmlFor={ `rvtx-field-id-${ index }` }
 								>
-									{ __( 'ID', 'forminbox' ) }
+									{ __( 'ID', 'reinventx-forms' ) }
 								</label>
 								<Input
-									id={ `forminbox-field-id-${ index }` }
+									id={ `rvtx-field-id-${ index }` }
 									className="font-mono"
 									value={ field.id }
 									maxLength={ 64 }
@@ -315,7 +327,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 							</div>
 							<div className="flex w-36 flex-col gap-1.5">
 								<span className="text-xs font-medium text-muted-foreground">
-									{ __( 'Type', 'forminbox' ) }
+									{ __( 'Type', 'reinventx-forms' ) }
 								</span>
 								<Select
 									value={ field.type }
@@ -328,7 +340,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 									<SelectTrigger
 										aria-label={ __(
 											'Field type',
-											'forminbox'
+											'reinventx-forms'
 										) }
 									>
 										<SelectValue />
@@ -349,7 +361,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 							</div>
 							<div className="flex h-9 items-center gap-2">
 								<Switch
-									id={ `forminbox-field-required-${ index }` }
+									id={ `rvtx-field-required-${ index }` }
 									checked={ field.required }
 									onCheckedChange={ ( checked ) =>
 										updateField( index, {
@@ -359,9 +371,9 @@ export default function FormEditor( { formId, onDone }: Props ) {
 								/>
 								<label
 									className="text-sm"
-									htmlFor={ `forminbox-field-required-${ index }` }
+									htmlFor={ `rvtx-field-required-${ index }` }
 								>
-									{ __( 'Required', 'forminbox' ) }
+									{ __( 'Required', 'reinventx-forms' ) }
 								</label>
 							</div>
 							<div className="flex gap-1">
@@ -371,7 +383,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 									disabled={ index === 0 }
 									aria-label={ __(
 										'Move field up',
-										'forminbox'
+										'reinventx-forms'
 									) }
 									onClick={ () => moveField( index, -1 ) }
 								>
@@ -383,7 +395,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 									disabled={ index === fields.length - 1 }
 									aria-label={ __(
 										'Move field down',
-										'forminbox'
+										'reinventx-forms'
 									) }
 									onClick={ () => moveField( index, 1 ) }
 								>
@@ -394,7 +406,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 									size="icon"
 									aria-label={ __(
 										'Remove field',
-										'forminbox'
+										'reinventx-forms'
 									) }
 									onClick={ () => removeField( index ) }
 								>
@@ -415,7 +427,7 @@ export default function FormEditor( { formId, onDone }: Props ) {
 								<Plus />
 								{ sprintf(
 									/* translators: %s: field type name. */
-									__( 'Add %s field', 'forminbox' ),
+									__( 'Add %s field', 'reinventx-forms' ),
 									label()
 								) }
 							</Button>
@@ -427,15 +439,15 @@ export default function FormEditor( { formId, onDone }: Props ) {
 			<div className="flex gap-2">
 				<Button disabled={ saving } onClick={ onSave }>
 					{ saving
-						? __( 'Saving…', 'forminbox' )
-						: __( 'Save form', 'forminbox' ) }
+						? __( 'Saving…', 'reinventx-forms' )
+						: __( 'Save form', 'reinventx-forms' ) }
 				</Button>
 				<Button
 					variant="outline"
 					disabled={ saving }
 					onClick={ onDone }
 				>
-					{ __( 'Cancel', 'forminbox' ) }
+					{ __( 'Cancel', 'reinventx-forms' ) }
 				</Button>
 			</div>
 		</div>

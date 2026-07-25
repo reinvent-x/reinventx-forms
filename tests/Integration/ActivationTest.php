@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Database\Migrator;
-use FormInbox\Plugin;
-use FormInbox\Setup\Activator;
-use FormInbox\Setup\Capabilities;
+use Reinventx\Database\Migrator;
+use Reinventx\Plugin;
+use Reinventx\Setup\Activator;
+use Reinventx\Setup\Capabilities;
 
-final class ActivationTest extends FormInboxTestCase {
+final class ActivationTest extends ReinventxTestCase {
 
 	public function testActivationCreatesAllTables(): void {
 		Activator::activate();
@@ -35,7 +35,7 @@ final class ActivationTest extends FormInboxTestCase {
 		$this->assertSame( Migrator::SCHEMA_VERSION, (int) get_option( Migrator::OPTION ) );
 	}
 
-	public function testAdministratorReceivesFormInboxCapabilities(): void {
+	public function testAdministratorReceivesReinventxCapabilities(): void {
 		Activator::activate();
 
 		$role = get_role( 'administrator' );

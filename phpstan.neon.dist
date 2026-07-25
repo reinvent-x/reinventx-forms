@@ -4,7 +4,7 @@ includes:
 parameters:
     level: 8
     paths:
-        - forminbox.php
+        - reinventx-forms.php
         - uninstall.php
         - src
     treatPhpDocTypesAsCertain: false

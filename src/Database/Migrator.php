@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Database;
+namespace Reinventx\Database;
 
 use wpdb;
 
 /**
- * Installs and upgrades the FormInbox schema.
+ * Installs and upgrades the Reinventx Forms schema.
  *
  * The installed version lives in an option; migrate() replays every step
  * above it, in order. Steps must be idempotent — activation can run them
@@ -15,7 +15,7 @@ use wpdb;
 final class Migrator {
 
 	public const SCHEMA_VERSION = 1;
-	public const OPTION         = 'forminbox_schema_version';
+	public const OPTION         = 'rvtx_schema_version';
 
 	public function __construct(
 		private readonly wpdb $wpdb,

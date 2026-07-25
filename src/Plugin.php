@@ -1,28 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox;
+namespace Reinventx;
 
-use FormInbox\Admin\Menu;
-use FormInbox\Database\Migrator;
-use FormInbox\Database\Schema;
-use FormInbox\Database\Tables;
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\FormRepository;
-use FormInbox\Http\FormsController;
-use FormInbox\Http\LeadsController;
-use FormInbox\Http\SettingsController;
-use FormInbox\Http\SubmissionsController;
-use FormInbox\Leads\LeadNoteRepository;
-use FormInbox\Leads\LeadRepository;
-use FormInbox\Leads\LeadStatusService;
-use FormInbox\Rendering\FormEmbed;
-use FormInbox\Rendering\FormRenderer;
-use FormInbox\Rendering\Shortcode;
-use FormInbox\Submissions\RateLimiter;
-use FormInbox\Submissions\SubmissionHandler;
-use FormInbox\Submissions\SubmissionToken;
-use FormInbox\Submissions\SubmissionValidator;
+use Reinventx\Admin\Menu;
+use Reinventx\Database\Migrator;
+use Reinventx\Database\Schema;
+use Reinventx\Database\Tables;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Http\FormsController;
+use Reinventx\Http\LeadsController;
+use Reinventx\Http\SettingsController;
+use Reinventx\Http\SubmissionsController;
+use Reinventx\Leads\LeadNoteRepository;
+use Reinventx\Leads\LeadRepository;
+use Reinventx\Leads\LeadStatusService;
+use Reinventx\Rendering\FormEmbed;
+use Reinventx\Rendering\FormRenderer;
+use Reinventx\Rendering\Shortcode;
+use Reinventx\Submissions\RateLimiter;
+use Reinventx\Submissions\SubmissionHandler;
+use Reinventx\Submissions\SubmissionToken;
+use Reinventx\Submissions\SubmissionValidator;
 
 /**
  * Composition root. Builds the plugin's services and registers their hooks.
@@ -99,7 +99,7 @@ final class Plugin {
 			$asset = require $asset_file;
 
 			wp_register_script(
-				'forminbox-block-form',
+				'rvtx-block-form',
 				$this->url() . 'build/block-form.js',
 				$asset['dependencies'],
 				$asset['version'],

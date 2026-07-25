@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\Form;
-use FormInbox\Forms\FormConfig;
-use FormInbox\Forms\FormRepository;
-use FormInbox\Setup\Activator;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\Form;
+use Reinventx\Forms\FormConfig;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Setup\Activator;
 use WP_Block_Type_Registry;
 
-final class BlockTest extends FormInboxTestCase {
+final class BlockTest extends ReinventxTestCase {
 
 	private FormRepository $forms;
 
@@ -47,7 +47,7 @@ final class BlockTest extends FormInboxTestCase {
 	}
 
 	private function renderBlock( int $form_id ): string {
-		$block = WP_Block_Type_Registry::get_instance()->get_registered( 'forminbox/form' );
+		$block = WP_Block_Type_Registry::get_instance()->get_registered( 'reinventx-forms/form' );
 
 		$this->assertNotNull( $block );
 
@@ -59,13 +59,13 @@ final class BlockTest extends FormInboxTestCase {
 	 * variation; mask them so outputs can be compared.
 	 */
 	private function normalize( string $html ): string {
-		$html = (string) preg_replace( '/name="forminbox_token" value="[^"]*"/', 'name="forminbox_token" value="TOKEN"', $html );
+		$html = (string) preg_replace( '/name="rvtx_token" value="[^"]*"/', 'name="rvtx_token" value="TOKEN"', $html );
 
-		return (string) preg_replace( '/name="forminbox_issued_at" value="\d+"/', 'name="forminbox_issued_at" value="TIME"', $html );
+		return (string) preg_replace( '/name="rvtx_issued_at" value="\d+"/', 'name="rvtx_issued_at" value="TIME"', $html );
 	}
 
 	public function testBlockIsRegisteredWithFormIdAttribute(): void {
-		$block = WP_Block_Type_Registry::get_instance()->get_registered( 'forminbox/form' );
+		$block = WP_Block_Type_Registry::get_instance()->get_registered( 'reinventx-forms/form' );
 
 		$this->assertNotNull( $block );
 		$this->assertArrayHasKey( 'formId', $block->attributes );
@@ -73,9 +73,9 @@ final class BlockTest extends FormInboxTestCase {
 
 	public function testBlockRendersIdenticallyToShortcode(): void {
 		$block_html     = $this->renderBlock( $this->form->id );
-		$shortcode_html = do_shortcode( sprintf( '[forminbox id="%d"]', $this->form->id ) );
+		$shortcode_html = do_shortcode( sprintf( '[rvtx_form id="%d"]', $this->form->id ) );
 
-		$this->assertStringContainsString( '<form class="forminbox-form"', $block_html );
+		$this->assertStringContainsString( '<form class="rvtx-form"', $block_html );
 		$this->assertSame( $this->normalize( $shortcode_html ), $this->normalize( $block_html ) );
 	}
 
@@ -91,7 +91,7 @@ final class BlockTest extends FormInboxTestCase {
 
 		$html = $this->renderBlock( $this->form->id );
 
-		$this->assertStringContainsString( 'forminbox-placeholder', $html );
+		$this->assertStringContainsString( 'rvtx-placeholder', $html );
 		$this->assertStringNotContainsString( '<form', $html );
 	}
 }

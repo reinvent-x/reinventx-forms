@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Unit\Submissions;
+namespace Reinventx\Tests\Unit\Submissions;
 
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\FormConfig;
-use FormInbox\Submissions\SubmissionValidator;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\FormConfig;
+use Reinventx\Submissions\SubmissionValidator;
 use PHPUnit\Framework\TestCase;
 
 final class SubmissionValidatorTest extends TestCase {

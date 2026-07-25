@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Unit\Database;
+namespace Reinventx\Tests\Unit\Database;
 
-use FormInbox\Database\Schema;
-use FormInbox\Database\Tables;
+use Reinventx\Database\Schema;
+use Reinventx\Database\Tables;
 use PHPUnit\Framework\TestCase;
 
 final class SchemaTest extends TestCase {
@@ -22,7 +22,7 @@ final class SchemaTest extends TestCase {
 		$statements = $this->statements();
 
 		$this->assertSame(
-			array( 'wp_forminbox_forms', 'wp_forminbox_leads', 'wp_forminbox_lead_notes' ),
+			array( 'wp_rvtx_forms', 'wp_rvtx_leads', 'wp_rvtx_lead_notes' ),
 			array_keys( $statements )
 		);
 	}
@@ -38,7 +38,7 @@ final class SchemaTest extends TestCase {
 	}
 
 	public function testLeadsTableCapturesSourceContext(): void {
-		$leads = $this->statements()['wp_forminbox_leads'];
+		$leads = $this->statements()['wp_rvtx_leads'];
 
 		foreach ( array( 'form_id', 'status', 'data', 'source_url', 'source_title', 'referrer_url', 'user_agent', 'ip_hash', 'submitted_at' ) as $column ) {
 			$this->assertStringContainsString( $column, $leads );
@@ -48,7 +48,7 @@ final class SchemaTest extends TestCase {
 	}
 
 	public function testLeadNotesTableTracksAuthorship(): void {
-		$notes = $this->statements()['wp_forminbox_lead_notes'];
+		$notes = $this->statements()['wp_rvtx_lead_notes'];
 
 		$this->assertStringContainsString( 'lead_id bigint(20) unsigned NOT NULL', $notes );
 		$this->assertStringContainsString( 'user_id bigint(20) unsigned NOT NULL', $notes );

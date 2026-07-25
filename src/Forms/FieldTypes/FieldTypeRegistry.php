@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Forms\FieldTypes;
+namespace Reinventx\Forms\FieldTypes;
 
 /**
  * The set of field types a form config may use.

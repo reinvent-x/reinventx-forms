@@ -1,6 +1,7 @@
-# Excluded from the release ZIP. The ZIP ships: forminbox.php, uninstall.php,
+# Excluded from the release ZIP. The ZIP ships: reinventx-forms.php, uninstall.php,
 # src/, blocks/, build/, readme.txt, composer.json (Plugin Check wants it
 # alongside vendor/), and vendor/ (autoloader only, composer install --no-dev).
+.claude
 .distignore
 .editorconfig
 .git
@@ -8,6 +9,9 @@
 .gitignore
 .phpunit.result.cache
 .phpunit.result.cache.integration
+# wp.org directory assets (banner/icon/screenshots) are uploaded to SVN
+# assets/, never shipped inside the plugin ZIP.
+assets
 bin
 .wp-env.json
 client

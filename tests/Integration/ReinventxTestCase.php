@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Database\Migrator;
-use FormInbox\Database\Tables;
+use Reinventx\Database\Migrator;
+use Reinventx\Database\Tables;
 use WP_UnitTestCase;
 
 /**
@@ -15,7 +15,7 @@ use WP_UnitTestCase;
  * SHOW TABLES and to dbDelta's ALTER path), so the rewrite filters are
  * removed and tables are dropped explicitly in tear_down().
  */
-abstract class FormInboxTestCase extends WP_UnitTestCase {
+abstract class ReinventxTestCase extends WP_UnitTestCase {
 
 	public function set_up(): void {
 		parent::set_up();

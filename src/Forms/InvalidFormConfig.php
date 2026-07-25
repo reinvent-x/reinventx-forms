@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Forms;
+namespace Reinventx\Forms;
 
 /**
  * Thrown when untrusted form config fails validation.

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Unit\Forms;
+namespace Reinventx\Tests\Unit\Forms;
 
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\FormConfig;
-use FormInbox\Forms\InvalidFormConfig;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\FormConfig;
+use Reinventx\Forms\InvalidFormConfig;
 use PHPUnit\Framework\TestCase;
 
 final class FormConfigTest extends TestCase {

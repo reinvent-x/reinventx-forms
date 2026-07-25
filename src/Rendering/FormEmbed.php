@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Rendering;
+namespace Reinventx\Rendering;
 
-use FormInbox\Forms\FormRepository;
-use FormInbox\Forms\FormStatus;
-use FormInbox\Http\SubmissionsController;
-use FormInbox\Plugin;
-use FormInbox\Submissions\SubmissionContext;
-use FormInbox\Submissions\SubmissionHandler;
-use FormInbox\Submissions\SubmissionOutcome;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Forms\FormStatus;
+use Reinventx\Http\SubmissionsController;
+use Reinventx\Plugin;
+use Reinventx\Submissions\SubmissionContext;
+use Reinventx\Submissions\SubmissionHandler;
+use Reinventx\Submissions\SubmissionOutcome;
 
 /**
  * The one embedding path: the shortcode and the block both delegate here,
@@ -36,8 +36,8 @@ final class FormEmbed {
 			// edit content (also what the block's editor preview shows).
 			return current_user_can( 'edit_posts' )
 				? sprintf(
-					'<div class="forminbox-form forminbox-placeholder">%s</div>',
-					esc_html__( 'This FormInbox form is unavailable — it may have been archived. Only editors see this notice.', 'forminbox' )
+					'<div class="rvtx-form rvtx-placeholder">%s</div>',
+					esc_html__( 'This Reinventx form is unavailable — it may have been archived. Only editors see this notice.', 'reinventx-forms' )
 				)
 				: '';
 		}
@@ -67,8 +67,8 @@ final class FormEmbed {
 			return RenderState::blank();
 		}
 
-		$posted_form_id = isset( $_POST['forminbox_form_id'] ) && is_scalar( $_POST['forminbox_form_id'] )
-			? absint( wp_unslash( $_POST['forminbox_form_id'] ) )
+		$posted_form_id = isset( $_POST['rvtx_form_id'] ) && is_scalar( $_POST['rvtx_form_id'] )
+			? absint( wp_unslash( $_POST['rvtx_form_id'] ) )
 			: 0;
 
 		if ( $form_id !== $posted_form_id ) {
@@ -77,24 +77,24 @@ final class FormEmbed {
 
 		$raw_fields = array();
 
-		if ( isset( $_POST['forminbox_fields'] ) && is_array( $_POST['forminbox_fields'] ) ) {
+		if ( isset( $_POST['rvtx_fields'] ) && is_array( $_POST['rvtx_fields'] ) ) {
 			// Field values are intentionally not run through a generic WP
 			// sanitizer here: SubmissionValidator sanitizes each one with
 			// its field type's own rules before anything is stored.
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			foreach ( wp_unslash( $_POST['forminbox_fields'] ) as $key => $value ) {
+			foreach ( wp_unslash( $_POST['rvtx_fields'] ) as $key => $value ) {
 				if ( is_string( $key ) && is_scalar( $value ) ) {
 					$raw_fields[ $key ] = (string) $value;
 				}
 			}
 		}
 
-		$issued_at = isset( $_POST['forminbox_issued_at'] ) && is_scalar( $_POST['forminbox_issued_at'] )
-			? absint( wp_unslash( $_POST['forminbox_issued_at'] ) )
+		$issued_at = isset( $_POST['rvtx_issued_at'] ) && is_scalar( $_POST['rvtx_issued_at'] )
+			? absint( wp_unslash( $_POST['rvtx_issued_at'] ) )
 			: 0;
 
 		$submission = array(
-			'token'     => $this->postString( 'forminbox_token' ),
+			'token'     => $this->postString( 'rvtx_token' ),
 			'issued_at' => $issued_at,
 			'website'   => $this->postString( SubmissionHandler::HONEYPOT_FIELD ),
 			'fields'    => $raw_fields,
@@ -110,13 +110,13 @@ final class FormEmbed {
 		 *
 		 * @param bool $store Default true.
 		 */
-		if ( ! apply_filters( 'forminbox_store_ip_hash', true ) ) {
+		if ( ! apply_filters( 'rvtx_store_ip_hash', true ) ) {
 			$ip = null;
 		}
 
 		$context = SubmissionContext::fromRaw(
-			esc_url_raw( $this->postString( 'forminbox_source_url' ) ),
-			sanitize_text_field( $this->postString( 'forminbox_source_title' ) ),
+			esc_url_raw( $this->postString( 'rvtx_source_url' ) ),
+			sanitize_text_field( $this->postString( 'rvtx_source_title' ) ),
 			isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( (string) $_SERVER['HTTP_REFERER'] ) ) : null,
 			isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( (string) $_SERVER['HTTP_USER_AGENT'] ) ) : null,
 			$ip,
@@ -156,7 +156,7 @@ final class FormEmbed {
 		$asset = require $asset_file;
 
 		wp_enqueue_script(
-			'forminbox-public-form',
+			'rvtx-public-form',
 			$this->plugin->url() . 'build/public-form.js',
 			$asset['dependencies'],
 			$asset['version'],

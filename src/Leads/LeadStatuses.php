@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Leads;
+namespace Reinventx\Leads;
 
 /**
  * The follow-up pipeline. Statuses are strings end to end (column, REST,

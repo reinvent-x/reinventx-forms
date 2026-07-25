@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Forms;
+namespace Reinventx\Forms;
 
 /**
  * A stored form. Immutable snapshot of one row in the forms table.

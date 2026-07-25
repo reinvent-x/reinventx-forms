@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Unit\Forms;
+namespace Reinventx\Tests\Unit\Forms;
 
-use FormInbox\Forms\FieldTypes\EmailType;
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\FieldTypes\TextareaType;
-use FormInbox\Forms\FieldTypes\TextType;
+use Reinventx\Forms\FieldTypes\EmailType;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\FieldTypes\TextareaType;
+use Reinventx\Forms\FieldTypes\TextType;
 use PHPUnit\Framework\TestCase;
 
 final class FieldTypesTest extends TestCase {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Submissions;
+namespace Reinventx\Submissions;
 
 /**
  * Where a submission came from. Everything here is untrusted visitor input

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Setup;
+namespace Reinventx\Setup;
 
 /**
- * FormInbox custom capabilities.
+ * Reinventx Forms custom capabilities.
  *
  * Forms management and lead (inbox) access are separate capabilities so a
  * future release can give e.g. a sales role inbox access without form
@@ -12,8 +12,8 @@ namespace FormInbox\Setup;
  */
 final class Capabilities {
 
-	public const MANAGE_FORMS = 'forminbox_manage_forms';
-	public const MANAGE_LEADS = 'forminbox_manage_leads';
+	public const MANAGE_FORMS = 'rvtx_manage_forms';
+	public const MANAGE_LEADS = 'rvtx_manage_leads';
 
 	/**
 	 * @return string[]

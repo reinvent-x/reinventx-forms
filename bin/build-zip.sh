@@ -4,7 +4,7 @@
 #   composer install --no-dev --optimize-autoloader
 #   npm ci && npm run build
 #
-# Output: dist/forminbox.zip (contains a single forminbox/ directory).
+# Output: dist/reinventx-forms.zip (contains a single reinventx-forms/ directory).
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -18,18 +18,19 @@ if [ -d vendor/phpunit ]; then
 fi
 
 rm -rf dist
-mkdir -p dist/forminbox
+mkdir -p dist/reinventx-forms
 
-rsync -a --exclude-from=.distignore --exclude=dist ./ dist/forminbox/
+rsync -a --exclude-from=.distignore --exclude=dist ./ dist/reinventx-forms/
 
-( cd dist && zip -rq forminbox.zip forminbox )
+( cd dist && zip -rq reinventx-forms.zip reinventx-forms )
 
-echo "dist/forminbox.zip:"
-unzip -l dist/forminbox.zip | tail -3
+echo "dist/reinventx-forms.zip:"
+unzip -l dist/reinventx-forms.zip | tail -3
 
-# The ZIP must never contain sources, tests, or CI config.
-for forbidden in client/ tests/ .github/ node_modules/ package-lock.json composer.lock; do
-	if unzip -l dist/forminbox.zip | grep -q "forminbox/${forbidden}"; then
+# The ZIP must never contain sources, tests, CI config, or the wp.org
+# directory assets (those go to SVN assets/, not into the plugin).
+for forbidden in client/ tests/ .github/ node_modules/ assets/ package-lock.json composer.lock; do
+	if unzip -l dist/reinventx-forms.zip | grep -q "reinventx-forms/${forbidden}"; then
 		echo "FAIL: ${forbidden} leaked into the ZIP"
 		exit 1
 	fi

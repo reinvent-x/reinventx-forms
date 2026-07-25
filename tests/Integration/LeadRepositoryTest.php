@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Leads\Lead;
-use FormInbox\Leads\LeadRepository;
-use FormInbox\Setup\Activator;
-use FormInbox\Submissions\SubmissionContext;
+use Reinventx\Leads\Lead;
+use Reinventx\Leads\LeadRepository;
+use Reinventx\Setup\Activator;
+use Reinventx\Submissions\SubmissionContext;
 
-final class LeadRepositoryTest extends FormInboxTestCase {
+final class LeadRepositoryTest extends ReinventxTestCase {
 
 	private LeadRepository $repository;
 

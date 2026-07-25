@@ -1,33 +1,33 @@
 <?php
 /**
  * Integration test bootstrap: boots the WordPress test suite (wp-phpunit)
- * and loads FormInbox as a must-use plugin.
+ * and loads Reinventx Forms as a must-use plugin.
  *
  * Runs inside the wp-env tests container:
  *   npm run test:php
  *
- * @package FormInbox
+ * @package Reinventx
  */
 
 declare(strict_types=1);
 
-$forminbox_root = dirname( __DIR__, 2 );
+$rvtx_root = dirname( __DIR__, 2 );
 
-require_once $forminbox_root . '/vendor/autoload.php';
+require_once $rvtx_root . '/vendor/autoload.php';
 
-$forminbox_wp_phpunit = getenv( 'WP_PHPUNIT__DIR' );
+$rvtx_wp_phpunit = getenv( 'WP_PHPUNIT__DIR' );
 
-if ( false === $forminbox_wp_phpunit ) {
-	$forminbox_wp_phpunit = $forminbox_root . '/vendor/wp-phpunit/wp-phpunit';
+if ( false === $rvtx_wp_phpunit ) {
+	$rvtx_wp_phpunit = $rvtx_root . '/vendor/wp-phpunit/wp-phpunit';
 }
 
-require_once $forminbox_wp_phpunit . '/includes/functions.php';
+require_once $rvtx_wp_phpunit . '/includes/functions.php';
 
 tests_add_filter(
 	'muplugins_loaded',
-	static function () use ( $forminbox_root ): void {
-		require $forminbox_root . '/forminbox.php';
+	static function () use ( $rvtx_root ): void {
+		require $rvtx_root . '/reinventx-forms.php';
 	}
 );
 
-require $forminbox_wp_phpunit . '/includes/bootstrap.php';
+require $rvtx_wp_phpunit . '/includes/bootstrap.php';

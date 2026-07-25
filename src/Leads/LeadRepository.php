@@ -4,10 +4,10 @@ declare(strict_types=1);
 // phpcs:disable WordPress.DB.DirectDatabaseQuery -- This repository is the
 // one sanctioned home for direct queries against the custom leads table.
 
-namespace FormInbox\Leads;
+namespace Reinventx\Leads;
 
-use FormInbox\Database\Tables;
-use FormInbox\Submissions\SubmissionContext;
+use Reinventx\Database\Tables;
+use Reinventx\Submissions\SubmissionContext;
 use wpdb;
 
 /**

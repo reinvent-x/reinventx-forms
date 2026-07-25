@@ -73,7 +73,10 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 					setError(
 						isApiError( e )
 							? e.message
-							: __( 'Could not load the lead.', 'forminbox' )
+							: __(
+									'Could not load the lead.',
+									'reinventx-forms'
+							  )
 					);
 				}
 			} );
@@ -94,7 +97,7 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 			setError(
 				isApiError( e )
 					? e.message
-					: __( 'Could not update the status.', 'forminbox' )
+					: __( 'Could not update the status.', 'reinventx-forms' )
 			);
 		}
 	};
@@ -116,7 +119,7 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 			setError(
 				isApiError( e )
 					? e.message
-					: __( 'Could not save the note.', 'forminbox' )
+					: __( 'Could not save the note.', 'reinventx-forms' )
 			);
 		} finally {
 			setSavingNote( false );
@@ -129,7 +132,7 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 				<div>
 					<Button variant="ghost" size="sm" onClick={ onBack }>
 						<ArrowLeft />
-						{ __( 'Back to inbox', 'forminbox' ) }
+						{ __( 'Back to inbox', 'reinventx-forms' ) }
 					</Button>
 				</div>
 				{ error ? (
@@ -138,7 +141,7 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 					</Alert>
 				) : (
 					<p className="text-muted-foreground">
-						{ __( 'Loading…', 'forminbox' ) }
+						{ __( 'Loading…', 'reinventx-forms' ) }
 					</p>
 				) }
 			</div>
@@ -150,7 +153,7 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 			<div className="flex items-center justify-between">
 				<Button variant="ghost" size="sm" onClick={ onBack }>
 					<ArrowLeft />
-					{ __( 'Back to inbox', 'forminbox' ) }
+					{ __( 'Back to inbox', 'reinventx-forms' ) }
 				</Button>
 
 				<div className="flex items-center gap-2">
@@ -165,7 +168,10 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 							}
 						>
 							<SelectTrigger
-								aria-label={ __( 'Lead status', 'forminbox' ) }
+								aria-label={ __(
+									'Lead status',
+									'reinventx-forms'
+								) }
 							>
 								<SelectValue />
 							</SelectTrigger>
@@ -189,7 +195,9 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 
 			<Card>
 				<CardHeader>
-					<CardTitle>{ __( 'Submission', 'forminbox' ) }</CardTitle>
+					<CardTitle>
+						{ __( 'Submission', 'reinventx-forms' ) }
+					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<dl className="flex flex-col gap-3">
@@ -212,40 +220,40 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 
 			<Card>
 				<CardHeader>
-					<CardTitle>{ __( 'Source', 'forminbox' ) }</CardTitle>
+					<CardTitle>{ __( 'Source', 'reinventx-forms' ) }</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<dl className="flex flex-col gap-3">
 						<ContextRow
-							label={ __( 'Form', 'forminbox' ) }
+							label={ __( 'Form', 'reinventx-forms' ) }
 							value={ lead.form_name }
 						/>
 						{ lead.context.source_url && (
 							<ContextRow
-								label={ __( 'Page URL', 'forminbox' ) }
+								label={ __( 'Page URL', 'reinventx-forms' ) }
 								value={ lead.context.source_url }
 							/>
 						) }
 						{ lead.context.source_title && (
 							<ContextRow
-								label={ __( 'Page title', 'forminbox' ) }
+								label={ __( 'Page title', 'reinventx-forms' ) }
 								value={ lead.context.source_title }
 							/>
 						) }
 						{ lead.context.referrer_url && (
 							<ContextRow
-								label={ __( 'Referrer', 'forminbox' ) }
+								label={ __( 'Referrer', 'reinventx-forms' ) }
 								value={ lead.context.referrer_url }
 							/>
 						) }
 						{ lead.context.user_agent && (
 							<ContextRow
-								label={ __( 'Browser', 'forminbox' ) }
+								label={ __( 'Browser', 'reinventx-forms' ) }
 								value={ lead.context.user_agent }
 							/>
 						) }
 						<ContextRow
-							label={ __( 'Submitted (UTC)', 'forminbox' ) }
+							label={ __( 'Submitted (UTC)', 'reinventx-forms' ) }
 							value={ lead.submitted_at }
 						/>
 					</dl>
@@ -254,12 +262,12 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 
 			<Card>
 				<CardHeader>
-					<CardTitle>{ __( 'Notes', 'forminbox' ) }</CardTitle>
+					<CardTitle>{ __( 'Notes', 'reinventx-forms' ) }</CardTitle>
 				</CardHeader>
 				<CardContent className="flex flex-col gap-4">
 					{ lead.notes.length === 0 && (
 						<p className="text-sm text-muted-foreground">
-							{ __( 'No notes yet.', 'forminbox' ) }
+							{ __( 'No notes yet.', 'reinventx-forms' ) }
 						</p>
 					) }
 
@@ -277,12 +285,12 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 					<div className="flex flex-col gap-2">
 						<label
 							className="text-sm font-medium"
-							htmlFor="forminbox-new-note"
+							htmlFor="rvtx-new-note"
 						>
-							{ __( 'Add a note', 'forminbox' ) }
+							{ __( 'Add a note', 'reinventx-forms' ) }
 						</label>
 						<Textarea
-							id="forminbox-new-note"
+							id="rvtx-new-note"
 							value={ note }
 							maxLength={ 5000 }
 							rows={ 3 }
@@ -295,8 +303,8 @@ export default function LeadDetail( { leadId, onBack }: Props ) {
 								onClick={ onAddNote }
 							>
 								{ savingNote
-									? __( 'Saving…', 'forminbox' )
-									: __( 'Add note', 'forminbox' ) }
+									? __( 'Saving…', 'reinventx-forms' )
+									: __( 'Add note', 'reinventx-forms' ) }
 							</Button>
 						</div>
 					</div>

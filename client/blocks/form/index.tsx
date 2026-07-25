@@ -1,5 +1,5 @@
 /**
- * Editor side of the forminbox/form block. Rendering is server-side
+ * Editor side of the reinventx-forms/form block. Rendering is server-side
  * (the block and the shortcode share one PHP renderer), so this file only
  * provides the form picker and a live preview.
  *
@@ -36,7 +36,7 @@ function useForms(): { forms: FormOption[] | null; failed: boolean } {
 
 	useEffect( () => {
 		apiFetch< FormOption[] >( {
-			path: '/forminbox/v1/forms?status=active',
+			path: '/reinventx-forms/v1/forms?status=active',
 		} )
 			.then( ( items ) =>
 				setForms( items.map( ( { id, name } ) => ( { id, name } ) ) )
@@ -52,7 +52,7 @@ function useForms(): { forms: FormOption[] | null; failed: boolean } {
 
 function formOptions( forms: FormOption[] ) {
 	return [
-		{ label: __( 'Select a form…', 'forminbox' ), value: '0' },
+		{ label: __( 'Select a form…', 'reinventx-forms' ), value: '0' },
 		...forms.map( ( form ) => ( {
 			label: form.name,
 			value: String( form.id ),
@@ -70,7 +70,7 @@ function Edit( { attributes, setAttributes }: EditProps ) {
 			<Spinner />
 		) : (
 			<SelectControl
-				label={ __( 'Form', 'forminbox' ) }
+				label={ __( 'Form', 'reinventx-forms' ) }
 				value={ String( formId ) }
 				options={ formOptions( forms ) }
 				onChange={ ( value ) =>
@@ -83,7 +83,7 @@ function Edit( { attributes, setAttributes }: EditProps ) {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Form', 'forminbox' ) }>
+				<PanelBody title={ __( 'Form', 'reinventx-forms' ) }>
 					{ picker }
 				</PanelBody>
 			</InspectorControls>
@@ -91,8 +91,8 @@ function Edit( { attributes, setAttributes }: EditProps ) {
 			{ failed && (
 				<Notice status="warning" isDismissible={ false }>
 					{ __(
-						'Could not load the forms list. You may not have permission to manage FormInbox forms.',
-						'forminbox'
+						'Could not load the forms list. You may not have permission to manage Reinventx Forms.',
+						'reinventx-forms'
 					) }
 				</Notice>
 			) }
@@ -100,17 +100,17 @@ function Edit( { attributes, setAttributes }: EditProps ) {
 			{ formId === 0 ? (
 				<Placeholder
 					icon="email-alt2"
-					label={ __( 'FormInbox Form', 'forminbox' ) }
+					label={ __( 'Reinventx Form', 'reinventx-forms' ) }
 					instructions={ __(
 						'Choose which form to show here.',
-						'forminbox'
+						'reinventx-forms'
 					) }
 				>
 					{ picker }
 				</Placeholder>
 			) : (
 				<ServerSideRender
-					block="forminbox/form"
+					block="reinventx-forms/form"
 					attributes={ { formId } }
 				/>
 			) }
@@ -121,8 +121,8 @@ function Edit( { attributes, setAttributes }: EditProps ) {
 // Settings mirror blocks/form/block.json (the server-side source of
 // truth); the client copy exists because registerBlockType's types
 // require them and older editors do not merge server metadata.
-registerBlockType< { formId: number } >( 'forminbox/form', {
-	title: __( 'FormInbox Form', 'forminbox' ),
+registerBlockType< { formId: number } >( 'reinventx-forms/form', {
+	title: __( 'Reinventx Form', 'reinventx-forms' ),
 	category: 'widgets',
 	attributes: {
 		formId: { type: 'number', default: 0 },

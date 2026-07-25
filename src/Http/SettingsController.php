@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Http;
+namespace Reinventx\Http;
 
-use FormInbox\Setup\Uninstaller;
+use Reinventx\Setup\Uninstaller;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * Plugin settings: forminbox/v1/settings.
+ * Plugin settings: reinventx-forms/v1/settings.
  *
- * Gated on manage_options (not the FormInbox capabilities): the only
+ * Gated on manage_options (not the Reinventx Forms capabilities): the only
  * setting so far authorizes destroying all plugin data on uninstall,
  * which is a site-owner decision, not a lead-manager one.
  */
 final class SettingsController {
 
-	public const REST_NAMESPACE = 'forminbox/v1';
+	public const REST_NAMESPACE = 'reinventx-forms/v1';
 
 	public function registerRoutes(): void {
 		register_rest_route(
@@ -45,8 +45,8 @@ final class SettingsController {
 		}
 
 		return new WP_Error(
-			'forminbox_forbidden',
-			__( 'You are not allowed to manage FormInbox settings.', 'forminbox' ),
+			'rvtx_forbidden',
+			__( 'You are not allowed to manage Reinventx Forms settings.', 'reinventx-forms' ),
 			array( 'status' => rest_authorization_required_code() )
 		);
 	}
@@ -60,8 +60,8 @@ final class SettingsController {
 
 		if ( ! is_bool( $value ) ) {
 			return new WP_Error(
-				'forminbox_invalid_setting',
-				__( 'delete_data_on_uninstall must be true or false.', 'forminbox' ),
+				'rvtx_invalid_setting',
+				__( 'delete_data_on_uninstall must be true or false.', 'reinventx-forms' ),
 				array( 'status' => 400 )
 			);
 		}

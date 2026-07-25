@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Submissions;
+namespace Reinventx\Submissions;
 
-use FormInbox\Leads\Lead;
+use Reinventx\Leads\Lead;
 
 /**
  * What happened to a submission attempt. Shared by the REST endpoint and

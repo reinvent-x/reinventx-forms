@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Admin;
+namespace Reinventx\Admin;
 
-use FormInbox\Plugin;
-use FormInbox\Setup\Capabilities;
+use Reinventx\Plugin;
+use Reinventx\Setup\Capabilities;
 
 /**
- * Registers the FormInbox admin menu page and its assets.
+ * Registers the Reinventx Forms admin menu page and its assets.
  *
  * The page renders a single mount node; the React admin app (Milestone 1)
  * takes over from there. For Milestone 0 the bundle is a placeholder that
@@ -15,8 +15,8 @@ use FormInbox\Setup\Capabilities;
  */
 final class Menu {
 
-	public const PAGE_SLUG   = 'forminbox';
-	public const HOOK_SUFFIX = 'toplevel_page_forminbox';
+	public const PAGE_SLUG   = 'reinventx-forms';
+	public const HOOK_SUFFIX = 'toplevel_page_reinventx-forms';
 
 	public function __construct( private readonly Plugin $plugin ) {
 	}
@@ -28,8 +28,8 @@ final class Menu {
 
 	public function addMenuPage(): void {
 		add_menu_page(
-			__( 'FormInbox', 'forminbox' ),
-			__( 'FormInbox', 'forminbox' ),
+			__( 'Reinventx Forms', 'reinventx-forms' ),
+			__( 'Reinventx Forms', 'reinventx-forms' ),
 			Capabilities::MANAGE_FORMS,
 			self::PAGE_SLUG,
 			array( $this, 'renderPage' ),
@@ -39,9 +39,9 @@ final class Menu {
 	}
 
 	public function renderPage(): void {
-		echo '<div class="wrap" id="forminbox-wrap">';
-		echo '<h1>' . esc_html__( 'FormInbox', 'forminbox' ) . '</h1>';
-		echo '<div id="forminbox-admin">' . esc_html__( 'Loading FormInbox…', 'forminbox' ) . '</div>';
+		echo '<div class="wrap" id="rvtx-wrap">';
+		echo '<h1>' . esc_html__( 'Reinventx Forms', 'reinventx-forms' ) . '</h1>';
+		echo '<div id="rvtx-admin">' . esc_html__( 'Loading Reinventx Forms…', 'reinventx-forms' ) . '</div>';
 		echo '</div>';
 	}
 
@@ -59,7 +59,7 @@ final class Menu {
 		$asset = require $asset_file;
 
 		wp_enqueue_script(
-			'forminbox-admin',
+			'rvtx-admin',
 			$this->plugin->url() . 'build/admin.js',
 			$asset['dependencies'],
 			$asset['version'],
@@ -68,12 +68,12 @@ final class Menu {
 
 		if ( file_exists( $this->plugin->dir() . 'build/admin.css' ) ) {
 			wp_enqueue_style(
-				'forminbox-admin',
+				'rvtx-admin',
 				$this->plugin->url() . 'build/admin.css',
 				array(),
 				$asset['version']
 			);
-			wp_style_add_data( 'forminbox-admin', 'rtl', 'replace' );
+			wp_style_add_data( 'rvtx-admin', 'rtl', 'replace' );
 		}
 	}
 }

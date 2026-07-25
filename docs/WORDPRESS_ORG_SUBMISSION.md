@@ -3,12 +3,44 @@
 > GitHub is the development repository. WordPress.org SVN is the release
 > repository after approval.
 
+## Rename (2026-07-25)
+
+The first submission used the display name "FormInbox" / slug `forminbox`.
+The plugins team pended it: the name was flagged as colliding with an existing
+form-management product, and `form` is too common a word to serve as a prefix.
+Everything was renamed to **Reinventx Forms** / slug `reinventx-forms`:
+
+| Thing | Now |
+|---|---|
+| Display name | Reinventx Forms |
+| Slug / text domain / main file | `reinventx-forms`, `reinventx-forms.php` |
+| PHP namespace | `Reinventx\…` (PSR-4 → `src/`) |
+| Constants | `REINVENTX_VERSION`, `REINVENTX_FILE` |
+| Tables, options, hooks, caps, transients, REST error codes | `rvtx_` prefix |
+| Capabilities | `rvtx_manage_forms`, `rvtx_manage_leads` |
+| Tables | `{$wpdb->prefix}rvtx_forms`, `…rvtx_leads`, `…rvtx_lead_notes` |
+| Options | `rvtx_schema_version`, `rvtx_delete_data_on_uninstall` |
+| Filters/actions | `rvtx_lead_created`, `rvtx_lead_status_changed`, `rvtx_store_ip_hash`, `rvtx_rate_limit_max` |
+| Shortcode | `[rvtx_form id="…"]` |
+| Block | `reinventx-forms/form`, title "Reinventx Form" |
+| REST namespace | `reinventx-forms/v1` |
+| Script/style handles, DOM ids, CSS classes, data attrs | `rvtx-…` / `data-rvtx-…` |
+| Admin menu slug | `reinventx-forms` |
+
+The reply to the plugins team must **explicitly request the new slug**
+`reinventx-forms` — changing it in the code is not enough.
+
 ## Before submitting
 
-- [ ] **Confirm slug and name.** Requested slug: `forminbox`, display name
-      "FormInbox". The slug is assigned permanently at review time — verify it is
-      still available and matches the plugin's text domain (`forminbox`) and
-      main file (`forminbox.php`).
+- [ ] **Confirm slug and name.** Requested slug: `reinventx-forms`, display name
+      "Reinventx Forms". The slug is assigned permanently at review time — verify it is
+      still available and matches the plugin's text domain (`reinventx-forms`) and
+      main file (`reinventx-forms.php`).
+- [ ] **Contributors** in `readme.txt` is the wp.org username (`meladsamuel`).
+- [ ] **`composer.json` ships in the ZIP** (it is not in `.distignore`).
+- [ ] **`assets/` never ships in the ZIP** — directory banners/icons/screenshots
+      go to SVN `assets/` only. `.distignore` excludes it and `bin/build-zip.sh`
+      fails the build if it leaks.
 - [ ] **Validate `readme.txt`** with the official validator
       (https://wordpress.org/plugins/developers/readme-validator/): headers,
       `Stable tag`, `Tested up to` current, changelog present, no markdown-only
@@ -30,7 +62,7 @@
 
 ### Source availability note
 
-- The repository at https://github.com/forminbox/forminbox is public and acts
+- The repository at https://github.com/reinvent-x/reinventx-forms is public and acts
   as the canonical development/source repository.
 - The release ZIP intentionally excludes source and build tooling (`client/`
   TypeScript sources, tests, lockfiles, package files) per `.distignore`;
@@ -42,8 +74,8 @@
 
 ## Reviewer note: public form submissions
 
-FormInbox exposes one intentionally public REST endpoint,
-`POST forminbox/v1/submissions`, used by visitor form submissions. Visitors
+Reinventx Forms exposes one intentionally public REST endpoint,
+`POST reinventx-forms/v1/submissions`, used by visitor form submissions. Visitors
 are anonymous and public pages are often served from page caches, so a
 logged-in WordPress nonce is the wrong tool: it would be cached stale and
 fail legitimate submissions. Instead, every rendered form embeds a

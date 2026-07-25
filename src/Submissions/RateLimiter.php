@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Submissions;
+namespace Reinventx\Submissions;
 
 /**
  * Per-client submission throttle backed by transients.
@@ -14,7 +14,7 @@ final class RateLimiter {
 
 	public const MAX_PER_WINDOW  = 5;
 	public const WINDOW_SECONDS  = 60;
-	private const TRANSIENT_BASE = 'forminbox_rl_';
+	private const TRANSIENT_BASE = 'rvtx_rl_';
 
 	/**
 	 * Record one attempt for the client key and report whether it is allowed.
@@ -27,7 +27,7 @@ final class RateLimiter {
 		 *
 		 * @param int $max Maximum submissions per window (default 5).
 		 */
-		$max = (int) apply_filters( 'forminbox_rate_limit_max', self::MAX_PER_WINDOW );
+		$max = (int) apply_filters( 'rvtx_rate_limit_max', self::MAX_PER_WINDOW );
 
 		$transient = self::TRANSIENT_BASE . substr( $key, 0, 32 );
 		$count     = (int) get_transient( $transient );

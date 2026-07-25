@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Forms\FieldTypes;
+namespace Reinventx\Forms\FieldTypes;
 
 /**
  * Behaviour of one field type: how to clean a raw submitted value and how

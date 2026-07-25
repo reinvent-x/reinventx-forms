@@ -1,11 +1,11 @@
-# Releasing FormInbox
+# Releasing Reinventx Forms
 
 ## Cutting a release
 
 1. **Bump the version** in all four places (then run `bin/check-version.sh vX.Y.Z`
    to prove they agree):
-   - `forminbox.php` — the `Version:` header
-   - `forminbox.php` — the `FORMINBOX_VERSION` constant
+   - `reinventx-forms.php` — the `Version:` header
+   - `reinventx-forms.php` — the `REINVENTX_VERSION` constant
    - `readme.txt` — `Stable tag:` (and add a changelog entry)
    - `package.json` — `version`
 2. **Run the manual smoke test** below on a clean `wp-env` site.
@@ -14,7 +14,7 @@
 
 `release.yml` then verifies the version sync, builds production assets
 (`composer install --no-dev --optimize-autoloader`, `npm ci && npm run build`),
-assembles `dist/forminbox.zip` honoring `.distignore`, proves the ZIP contains
+assembles `dist/reinventx-forms.zip` honoring `.distignore`, proves the ZIP contains
 no sources/tests/CI files, installs and activates it on a clean WordPress with
 wp-cli (tables, schema option, and capabilities asserted), and attaches the ZIP
 to a GitHub Release. A failure at any step means no release is published.
@@ -27,11 +27,11 @@ it cannot click through. Run it on a clean site (`npm run env:start`, empty
 DB). When QA'ing the packaged artifact itself, use the ZIP from the release
 workflow run rather than the mounted source tree.
 
-- [ ] Activate FormInbox. The FormInbox menu appears for the admin only.
+- [ ] Activate Reinventx Forms. The Reinventx Forms menu appears for the admin only.
 - [ ] **Create a form** with all three field types; mark one required. Save,
       reopen, confirm it round-trips.
-- [ ] **Embed it twice**: once as the FormInbox Form block (picker + preview
-      must show the real form), once as `[forminbox id="…"]` on another page.
+- [ ] **Embed it twice**: once as the Reinventx Form block (picker + preview
+      must show the real form), once as `[rvtx_form id="…"]` on another page.
       Both render identically on the frontend.
 - [ ] **Submit as a logged-out visitor** (block page and shortcode page):
       - invalid submission (missing required, bad email) shows inline errors,

@@ -1,29 +1,29 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Http;
+namespace Reinventx\Http;
 
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\Form;
-use FormInbox\Forms\FormConfig;
-use FormInbox\Forms\FormRepository;
-use FormInbox\Forms\FormStatus;
-use FormInbox\Setup\Capabilities;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\Form;
+use Reinventx\Forms\FormConfig;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Forms\FormStatus;
+use Reinventx\Setup\Capabilities;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * REST endpoints for managing forms: forminbox/v1/forms.
+ * REST endpoints for managing forms: reinventx-forms/v1/forms.
  *
  * Admin-only surface. Authentication is WordPress cookie + nonce (the admin
- * SPA sends X-WP-Nonce); authorization is the forminbox_manage_forms
+ * SPA sends X-WP-Nonce); authorization is the rvtx_manage_forms
  * capability, checked in an explicit permission_callback on every route.
  */
 final class FormsController {
 
-	public const REST_NAMESPACE = 'forminbox/v1';
+	public const REST_NAMESPACE = 'reinventx-forms/v1';
 
 	public function __construct(
 		private readonly FormRepository $forms,
@@ -78,8 +78,8 @@ final class FormsController {
 		}
 
 		return new WP_Error(
-			'forminbox_forbidden',
-			__( 'You are not allowed to manage FormInbox forms.', 'forminbox' ),
+			'rvtx_forbidden',
+			__( 'You are not allowed to manage Reinventx Forms.', 'reinventx-forms' ),
 			array( 'status' => rest_authorization_required_code() )
 		);
 	}
@@ -163,8 +163,8 @@ final class FormsController {
 
 		if ( '' === $name || mb_strlen( $name ) > Form::MAX_NAME ) {
 			return new WP_Error(
-				'forminbox_invalid_name',
-				__( 'Form name must be between 1 and 190 characters.', 'forminbox' ),
+				'rvtx_invalid_name',
+				__( 'Form name must be between 1 and 190 characters.', 'reinventx-forms' ),
 				array( 'status' => 400 )
 			);
 		}
@@ -173,8 +173,8 @@ final class FormsController {
 
 		if ( ! is_array( $raw_config ) ) {
 			return new WP_Error(
-				'forminbox_invalid_config',
-				__( 'Form config must be an object.', 'forminbox' ),
+				'rvtx_invalid_config',
+				__( 'Form config must be an object.', 'reinventx-forms' ),
 				array(
 					'status' => 400,
 					'errors' => array( 'config.not_an_object' ),
@@ -184,10 +184,10 @@ final class FormsController {
 
 		try {
 			$config = FormConfig::fromArray( $raw_config, $this->types );
-		} catch ( \FormInbox\Forms\InvalidFormConfig $e ) {
+		} catch ( \Reinventx\Forms\InvalidFormConfig $e ) {
 			return new WP_Error(
-				'forminbox_invalid_config',
-				__( 'Form config failed validation.', 'forminbox' ),
+				'rvtx_invalid_config',
+				__( 'Form config failed validation.', 'reinventx-forms' ),
 				array(
 					'status' => 400,
 					'errors' => $e->errors,
@@ -200,8 +200,8 @@ final class FormsController {
 
 	private function notFound(): WP_Error {
 		return new WP_Error(
-			'forminbox_not_found',
-			__( 'Form not found.', 'forminbox' ),
+			'rvtx_not_found',
+			__( 'Form not found.', 'reinventx-forms' ),
 			array( 'status' => 404 )
 		);
 	}

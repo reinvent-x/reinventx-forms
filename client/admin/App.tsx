@@ -40,7 +40,7 @@ export default function App() {
 		<div className="flex flex-col gap-5 py-2">
 			<nav
 				className="flex gap-1"
-				aria-label={ __( 'FormInbox', 'forminbox' ) }
+				aria-label={ __( 'Reinventx Forms', 'reinventx-forms' ) }
 			>
 				<Button
 					variant={ section === 'inbox' ? 'secondary' : 'ghost' }
@@ -48,7 +48,7 @@ export default function App() {
 					onClick={ () => setView( { name: 'inbox' } ) }
 				>
 					<InboxIcon />
-					{ __( 'Inbox', 'forminbox' ) }
+					{ __( 'Inbox', 'reinventx-forms' ) }
 				</Button>
 				<Button
 					variant={ section === 'forms' ? 'secondary' : 'ghost' }
@@ -56,7 +56,7 @@ export default function App() {
 					onClick={ () => setView( { name: 'forms' } ) }
 				>
 					<LayoutList />
-					{ __( 'Forms', 'forminbox' ) }
+					{ __( 'Forms', 'reinventx-forms' ) }
 				</Button>
 				<Button
 					variant={ section === 'settings' ? 'secondary' : 'ghost' }
@@ -64,7 +64,7 @@ export default function App() {
 					onClick={ () => setView( { name: 'settings' } ) }
 				>
 					<SettingsIcon />
-					{ __( 'Settings', 'forminbox' ) }
+					{ __( 'Settings', 'reinventx-forms' ) }
 				</Button>
 			</nav>
 

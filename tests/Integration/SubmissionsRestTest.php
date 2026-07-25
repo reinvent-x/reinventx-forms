@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\Form;
-use FormInbox\Forms\FormConfig;
-use FormInbox\Forms\FormRepository;
-use FormInbox\Leads\Lead;
-use FormInbox\Plugin;
-use FormInbox\Setup\Activator;
-use FormInbox\Submissions\RateLimiter;
-use FormInbox\Submissions\SubmissionToken;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\Form;
+use Reinventx\Forms\FormConfig;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Leads\Lead;
+use Reinventx\Plugin;
+use Reinventx\Setup\Activator;
+use Reinventx\Submissions\RateLimiter;
+use Reinventx\Submissions\SubmissionToken;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
-final class SubmissionsRestTest extends FormInboxTestCase {
+final class SubmissionsRestTest extends ReinventxTestCase {
 
 	private WP_REST_Server $server;
 
@@ -97,7 +97,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 	 * @param array<string, mixed> $payload
 	 */
 	private function submit( array $payload ): WP_REST_Response {
-		$request = new WP_REST_Request( 'POST', '/forminbox/v1/submissions' );
+		$request = new WP_REST_Request( 'POST', '/reinventx-forms/v1/submissions' );
 		$request->set_header( 'Content-Type', 'application/json' );
 		$request->set_header( 'User-Agent', 'Mozilla/5.0 Test' );
 		$request->set_header( 'Referer', 'https://google.com/search' );
@@ -119,7 +119,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 		$captured = null;
 
 		add_action(
-			'forminbox_lead_created',
+			'rvtx_lead_created',
 			static function ( Lead $lead ) use ( &$captured ) {
 				$captured = $lead;
 			}
@@ -151,7 +151,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 
 		$data = $response->get_data();
 
-		$this->assertSame( 'forminbox_invalid_fields', $data['code'] );
+		$this->assertSame( 'rvtx_invalid_fields', $data['code'] );
 		$this->assertSame(
 			array(
 				'name'  => 'required',
@@ -169,7 +169,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 		);
 
 		$this->assertSame( 400, $response->get_status() );
-		$this->assertSame( 'forminbox_rejected', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_rejected', $response->get_data()['code'] );
 		$this->assertSame( 0, $this->leadCount() );
 	}
 
@@ -186,7 +186,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 		);
 
 		$this->assertSame( 400, $response->get_status() );
-		$this->assertSame( 'forminbox_rejected', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_rejected', $response->get_data()['code'] );
 		$this->assertSame( 0, $this->leadCount() );
 	}
 
@@ -196,7 +196,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 		);
 
 		$this->assertSame( 400, $response->get_status() );
-		$this->assertSame( 'forminbox_rejected', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_rejected', $response->get_data()['code'] );
 		$this->assertSame( 0, $this->leadCount() );
 	}
 
@@ -208,7 +208,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 		$response = $this->submit( $this->payload() );
 
 		$this->assertSame( 429, $response->get_status() );
-		$this->assertSame( 'forminbox_rate_limited', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_rate_limited', $response->get_data()['code'] );
 		$this->assertSame( RateLimiter::MAX_PER_WINDOW, $this->leadCount() );
 	}
 
@@ -222,7 +222,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 	}
 
 	public function testNonJsonContentTypeIsRejected(): void {
-		$request = new WP_REST_Request( 'POST', '/forminbox/v1/submissions' );
+		$request = new WP_REST_Request( 'POST', '/reinventx-forms/v1/submissions' );
 		$request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
 		$request->set_body_params( $this->payload() );
 
@@ -232,12 +232,12 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 	}
 
 	public function testIpHashStorageCanBeFilteredOff(): void {
-		add_filter( 'forminbox_store_ip_hash', '__return_false' );
+		add_filter( 'rvtx_store_ip_hash', '__return_false' );
 
 		$captured = null;
 
 		add_action(
-			'forminbox_lead_created',
+			'rvtx_lead_created',
 			static function ( Lead $lead ) use ( &$captured ) {
 				$captured = $lead;
 			}
@@ -250,7 +250,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 
 	public function testRateLimitThresholdIsFilterable(): void {
 		add_filter(
-			'forminbox_rate_limit_max',
+			'rvtx_rate_limit_max',
 			static fn (): int => 1
 		);
 
@@ -275,7 +275,7 @@ final class SubmissionsRestTest extends FormInboxTestCase {
 		$captured = null;
 
 		add_action(
-			'forminbox_lead_created',
+			'rvtx_lead_created',
 			static function ( Lead $lead ) use ( &$captured ) {
 				$captured = $lead;
 			}

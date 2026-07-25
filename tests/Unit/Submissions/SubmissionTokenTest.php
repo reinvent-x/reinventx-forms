@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Unit\Submissions;
+namespace Reinventx\Tests\Unit\Submissions;
 
-use FormInbox\Submissions\SubmissionToken;
+use Reinventx\Submissions\SubmissionToken;
 use PHPUnit\Framework\TestCase;
 
 final class SubmissionTokenTest extends TestCase {

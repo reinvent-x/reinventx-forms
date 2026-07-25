@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Forms\FieldTypes;
+namespace Reinventx\Forms\FieldTypes;
 
 /**
  * Multi-line text. Newlines and tabs survive; other control characters do not.

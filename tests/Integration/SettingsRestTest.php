@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Setup\Activator;
-use FormInbox\Setup\Uninstaller;
+use Reinventx\Setup\Activator;
+use Reinventx\Setup\Uninstaller;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
-final class SettingsRestTest extends FormInboxTestCase {
+final class SettingsRestTest extends ReinventxTestCase {
 
 	private WP_REST_Server $server;
 
@@ -35,7 +35,7 @@ final class SettingsRestTest extends FormInboxTestCase {
 	}
 
 	private function request( string $method, ?array $body = null ): WP_REST_Response {
-		$request = new WP_REST_Request( $method, '/forminbox/v1/settings' );
+		$request = new WP_REST_Request( $method, '/reinventx-forms/v1/settings' );
 
 		if ( null !== $body ) {
 			$request->set_header( 'Content-Type', 'application/json' );
@@ -87,6 +87,6 @@ final class SettingsRestTest extends FormInboxTestCase {
 		$response = $this->request( 'PUT', array( 'delete_data_on_uninstall' => 'yes' ) );
 
 		$this->assertSame( 400, $response->get_status() );
-		$this->assertSame( 'forminbox_invalid_setting', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_invalid_setting', $response->get_data()['code'] );
 	}
 }

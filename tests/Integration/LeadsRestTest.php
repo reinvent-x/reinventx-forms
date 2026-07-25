@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Database\Tables;
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\Form;
-use FormInbox\Forms\FormConfig;
-use FormInbox\Forms\FormRepository;
-use FormInbox\Leads\Lead;
-use FormInbox\Leads\LeadRepository;
-use FormInbox\Setup\Activator;
-use FormInbox\Submissions\SubmissionContext;
+use Reinventx\Database\Tables;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\Form;
+use Reinventx\Forms\FormConfig;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Leads\Lead;
+use Reinventx\Leads\LeadRepository;
+use Reinventx\Setup\Activator;
+use Reinventx\Submissions\SubmissionContext;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
-final class LeadsRestTest extends FormInboxTestCase {
+final class LeadsRestTest extends ReinventxTestCase {
 
 	private WP_REST_Server $server;
 
@@ -109,7 +109,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 	public function testLoggedOutIsDenied(): void {
 		wp_set_current_user( 0 );
 
-		$this->assertSame( 401, $this->request( 'GET', '/forminbox/v1/leads' )->get_status() );
+		$this->assertSame( 401, $this->request( 'GET', '/reinventx-forms/v1/leads' )->get_status() );
 	}
 
 	public function testNonPrivilegedUserIsDeniedOnEveryRoute(): void {
@@ -117,15 +117,15 @@ final class LeadsRestTest extends FormInboxTestCase {
 
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'subscriber' ) ) );
 
-		$this->assertSame( 403, $this->request( 'GET', '/forminbox/v1/leads' )->get_status() );
-		$this->assertSame( 403, $this->request( 'GET', '/forminbox/v1/leads/' . $lead->id )->get_status() );
+		$this->assertSame( 403, $this->request( 'GET', '/reinventx-forms/v1/leads' )->get_status() );
+		$this->assertSame( 403, $this->request( 'GET', '/reinventx-forms/v1/leads/' . $lead->id )->get_status() );
 		$this->assertSame(
 			403,
-			$this->request( 'PATCH', '/forminbox/v1/leads/' . $lead->id, array( 'status' => 'contacted' ) )->get_status()
+			$this->request( 'PATCH', '/reinventx-forms/v1/leads/' . $lead->id, array( 'status' => 'contacted' ) )->get_status()
 		);
 		$this->assertSame(
 			403,
-			$this->request( 'POST', '/forminbox/v1/leads/' . $lead->id . '/notes', array( 'note' => 'hi' ) )->get_status()
+			$this->request( 'POST', '/reinventx-forms/v1/leads/' . $lead->id . '/notes', array( 'note' => 'hi' ) )->get_status()
 		);
 	}
 
@@ -143,7 +143,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 			array( 'id' => $older->id )
 		);
 
-		$response = $this->request( 'GET', '/forminbox/v1/leads' );
+		$response = $this->request( 'GET', '/reinventx-forms/v1/leads' );
 		$data     = $response->get_data();
 
 		$this->assertSame( 200, $response->get_status() );
@@ -165,14 +165,14 @@ final class LeadsRestTest extends FormInboxTestCase {
 
 		$this->leads->updateStatus( $other->id, 'contacted' );
 
-		$request = new WP_REST_Request( 'GET', '/forminbox/v1/leads' );
+		$request = new WP_REST_Request( 'GET', '/reinventx-forms/v1/leads' );
 		$request->set_query_params( array( 'form_id' => (string) $this->form->id ) );
 		$data = $this->server->dispatch( $request )->get_data();
 
 		$this->assertSame( 1, $data['total'] );
 		$this->assertSame( $mine->id, $data['items'][0]['id'] );
 
-		$request = new WP_REST_Request( 'GET', '/forminbox/v1/leads' );
+		$request = new WP_REST_Request( 'GET', '/reinventx-forms/v1/leads' );
 		$request->set_query_params( array( 'status' => 'contacted' ) );
 		$data = $this->server->dispatch( $request )->get_data();
 
@@ -185,7 +185,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 			$this->seedLead( 'Lead ' . $i );
 		}
 
-		$request = new WP_REST_Request( 'GET', '/forminbox/v1/leads' );
+		$request = new WP_REST_Request( 'GET', '/reinventx-forms/v1/leads' );
 		$request->set_query_params(
 			array(
 				'per_page' => '10',
@@ -200,7 +200,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 	}
 
 	public function testIndexRejectsUnknownStatusFilter(): void {
-		$request = new WP_REST_Request( 'GET', '/forminbox/v1/leads' );
+		$request = new WP_REST_Request( 'GET', '/reinventx-forms/v1/leads' );
 		$request->set_query_params( array( 'status' => 'bogus' ) );
 
 		$this->assertSame( 400, $this->server->dispatch( $request )->get_status() );
@@ -209,9 +209,9 @@ final class LeadsRestTest extends FormInboxTestCase {
 	public function testDetailShowsFieldsContextAndNotes(): void {
 		$lead = $this->seedLead();
 
-		$this->request( 'POST', '/forminbox/v1/leads/' . $lead->id . '/notes', array( 'note' => 'Called them.' ) );
+		$this->request( 'POST', '/reinventx-forms/v1/leads/' . $lead->id . '/notes', array( 'note' => 'Called them.' ) );
 
-		$data = $this->request( 'GET', '/forminbox/v1/leads/' . $lead->id )->get_data();
+		$data = $this->request( 'GET', '/reinventx-forms/v1/leads/' . $lead->id )->get_data();
 
 		$this->assertSame( 'Contact', $data['form_name'] );
 		$this->assertSame(
@@ -247,7 +247,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 			$this->context()
 		);
 
-		$data = $this->request( 'GET', '/forminbox/v1/leads/' . $lead->id )->get_data();
+		$data = $this->request( 'GET', '/reinventx-forms/v1/leads/' . $lead->id )->get_data();
 
 		$ids = array_column( $data['fields'], 'id' );
 
@@ -259,7 +259,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 		$captured = null;
 
 		add_action(
-			'forminbox_lead_status_changed',
+			'rvtx_lead_status_changed',
 			static function ( Lead $updated, string $from, string $to ) use ( &$captured ) {
 				$captured = array( $updated->id, $from, $to );
 			},
@@ -269,7 +269,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 
 		$response = $this->request(
 			'PATCH',
-			'/forminbox/v1/leads/' . $lead->id,
+			'/reinventx-forms/v1/leads/' . $lead->id,
 			array( 'status' => 'contacted' )
 		);
 
@@ -277,7 +277,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 		$this->assertSame( 'contacted', $response->get_data()['status'] );
 		$this->assertSame( array( $lead->id, 'new', 'contacted' ), $captured );
 
-		$list = $this->request( 'GET', '/forminbox/v1/leads' )->get_data();
+		$list = $this->request( 'GET', '/reinventx-forms/v1/leads' )->get_data();
 
 		$this->assertSame( 'contacted', $list['items'][0]['status'] );
 	}
@@ -287,13 +287,13 @@ final class LeadsRestTest extends FormInboxTestCase {
 		$fired = false;
 
 		add_action(
-			'forminbox_lead_status_changed',
+			'rvtx_lead_status_changed',
 			static function () use ( &$fired ) {
 				$fired = true;
 			}
 		);
 
-		$this->request( 'PATCH', '/forminbox/v1/leads/' . $lead->id, array( 'status' => 'new' ) );
+		$this->request( 'PATCH', '/reinventx-forms/v1/leads/' . $lead->id, array( 'status' => 'new' ) );
 
 		$this->assertFalse( $fired );
 	}
@@ -303,12 +303,12 @@ final class LeadsRestTest extends FormInboxTestCase {
 
 		$response = $this->request(
 			'PATCH',
-			'/forminbox/v1/leads/' . $lead->id,
+			'/reinventx-forms/v1/leads/' . $lead->id,
 			array( 'status' => 'bogus' )
 		);
 
 		$this->assertSame( 400, $response->get_status() );
-		$this->assertSame( 'forminbox_invalid_status', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_invalid_status', $response->get_data()['code'] );
 	}
 
 	public function testNoteSavesWithAuthorAttribution(): void {
@@ -325,7 +325,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 
 		$first = $this->request(
 			'POST',
-			'/forminbox/v1/leads/' . $lead->id . '/notes',
+			'/reinventx-forms/v1/leads/' . $lead->id . '/notes',
 			array( 'note' => 'First call made.' )
 		);
 
@@ -334,11 +334,11 @@ final class LeadsRestTest extends FormInboxTestCase {
 
 		$this->request(
 			'POST',
-			'/forminbox/v1/leads/' . $lead->id . '/notes',
+			'/reinventx-forms/v1/leads/' . $lead->id . '/notes',
 			array( 'note' => 'Second follow-up.' )
 		);
 
-		$notes = $this->request( 'GET', '/forminbox/v1/leads/' . $lead->id )->get_data()['notes'];
+		$notes = $this->request( 'GET', '/reinventx-forms/v1/leads/' . $lead->id )->get_data()['notes'];
 
 		$this->assertSame(
 			array( 'First call made.', 'Second follow-up.' ),
@@ -351,7 +351,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 
 		$response = $this->request(
 			'POST',
-			'/forminbox/v1/leads/' . $lead->id . '/notes',
+			'/reinventx-forms/v1/leads/' . $lead->id . '/notes',
 			array( 'note' => "  \n " )
 		);
 
@@ -359,14 +359,14 @@ final class LeadsRestTest extends FormInboxTestCase {
 	}
 
 	public function testMissingLeadReturns404OnEveryRoute(): void {
-		$this->assertSame( 404, $this->request( 'GET', '/forminbox/v1/leads/999999' )->get_status() );
+		$this->assertSame( 404, $this->request( 'GET', '/reinventx-forms/v1/leads/999999' )->get_status() );
 		$this->assertSame(
 			404,
-			$this->request( 'PATCH', '/forminbox/v1/leads/999999', array( 'status' => 'contacted' ) )->get_status()
+			$this->request( 'PATCH', '/reinventx-forms/v1/leads/999999', array( 'status' => 'contacted' ) )->get_status()
 		);
 		$this->assertSame(
 			404,
-			$this->request( 'POST', '/forminbox/v1/leads/999999/notes', array( 'note' => 'x' ) )->get_status()
+			$this->request( 'POST', '/reinventx-forms/v1/leads/999999/notes', array( 'note' => 'x' ) )->get_status()
 		);
 	}
 
@@ -379,7 +379,7 @@ final class LeadsRestTest extends FormInboxTestCase {
 			$this->context()
 		);
 
-		$data = $this->request( 'GET', '/forminbox/v1/leads/' . $lead->id )->get_data();
+		$data = $this->request( 'GET', '/reinventx-forms/v1/leads/' . $lead->id )->get_data();
 
 		// Raw in JSON (inert by definition); the SPA renders it as text.
 		$this->assertSame( $payload, $data['fields'][0]['value'] );

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Leads;
+namespace Reinventx\Leads;
 
 /**
  * One page of the inbox.

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<ruleset name="FormInbox">
-	<description>FormInbox coding standard: WordPress security and best-practice sniffs on top of PSR-4/modern-PHP naming.</description>
+<ruleset name="Reinventx Forms">
+	<description>Reinventx Forms coding standard: WordPress security and best-practice sniffs on top of PSR-4/modern-PHP naming.</description>
 
-	<file>forminbox.php</file>
+	<file>reinventx-forms.php</file>
 	<file>uninstall.php</file>
 	<file>src</file>
 	<file>tests</file>
@@ -33,7 +33,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="forminbox"/>
+				<element value="reinventx-forms"/>
 			</property>
 		</properties>
 	</rule>
@@ -41,9 +41,9 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="forminbox"/>
-				<element value="FormInbox"/>
-				<element value="FORMINBOX"/>
+				<element value="rvtx"/>
+				<element value="Reinventx"/>
+				<element value="REINVENTX"/>
 			</property>
 		</properties>
 	</rule>
@@ -51,8 +51,8 @@
 	<rule ref="WordPress.WP.Capabilities">
 		<properties>
 			<property name="custom_capabilities" type="array">
-				<element value="forminbox_manage_forms"/>
-				<element value="forminbox_manage_leads"/>
+				<element value="rvtx_manage_forms"/>
+				<element value="rvtx_manage_leads"/>
 			</property>
 		</properties>
 	</rule>

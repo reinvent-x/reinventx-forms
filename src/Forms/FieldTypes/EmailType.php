@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Forms\FieldTypes;
+namespace Reinventx\Forms\FieldTypes;
 
 /**
  * Email address. Empty is allowed (optional fields); anything non-empty

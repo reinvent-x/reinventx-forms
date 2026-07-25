@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Leads;
+namespace Reinventx\Leads;
 
 /**
  * An internal follow-up note on a lead. Author attribution is a user id;

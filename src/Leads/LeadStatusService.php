@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Leads;
+namespace Reinventx\Leads;
 
 /**
  * The only way a lead's status changes. Owning this in one place is what
- * makes forminbox_lead_status_changed a reliable extension point (M4+
+ * makes rvtx_lead_status_changed a reliable extension point (M4+
  * notifications and automation hang off it).
  */
 final class LeadStatusService {
@@ -46,7 +46,7 @@ final class LeadStatusService {
 		 * @param string $from    Previous status.
 		 * @param string $to      New status.
 		 */
-		do_action( 'forminbox_lead_status_changed', $updated, $lead->status, $status );
+		do_action( 'rvtx_lead_status_changed', $updated, $lead->status, $status );
 
 		return $updated;
 	}

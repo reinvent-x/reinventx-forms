@@ -10,7 +10,7 @@ import type {
 	LeadStatus,
 } from './types';
 
-const BASE = '/forminbox/v1/forms';
+const BASE = '/reinventx-forms/v1/forms';
 
 /**
  * Error body produced by WP_Error responses from our controller.
@@ -64,7 +64,7 @@ export function fetchAllForms(): Promise< Form[] > {
 	return apiFetch( { path: `${ BASE }?status=all` } );
 }
 
-const LEADS = '/forminbox/v1/leads';
+const LEADS = '/reinventx-forms/v1/leads';
 
 export interface LeadFilters {
 	page: number;
@@ -114,12 +114,12 @@ export interface Settings {
 }
 
 export function fetchSettings(): Promise< Settings > {
-	return apiFetch( { path: '/forminbox/v1/settings' } );
+	return apiFetch( { path: '/reinventx-forms/v1/settings' } );
 }
 
 export function updateSettings( settings: Settings ): Promise< Settings > {
 	return apiFetch( {
-		path: '/forminbox/v1/settings',
+		path: '/reinventx-forms/v1/settings',
 		method: 'PUT',
 		data: settings,
 	} );

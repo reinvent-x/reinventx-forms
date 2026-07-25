@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Setup;
+namespace Reinventx\Setup;
 
-use FormInbox\Plugin;
+use Reinventx\Plugin;
 
 /**
  * Runs on plugin activation. Must be idempotent — WordPress can fire

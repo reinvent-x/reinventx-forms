@@ -1,31 +1,31 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Http;
+namespace Reinventx\Http;
 
-use FormInbox\Forms\Form;
-use FormInbox\Forms\FormRepository;
-use FormInbox\Leads\Lead;
-use FormInbox\Leads\LeadNote;
-use FormInbox\Leads\LeadNoteRepository;
-use FormInbox\Leads\LeadRepository;
-use FormInbox\Leads\LeadStatuses;
-use FormInbox\Leads\LeadStatusService;
-use FormInbox\Setup\Capabilities;
+use Reinventx\Forms\Form;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Leads\Lead;
+use Reinventx\Leads\LeadNote;
+use Reinventx\Leads\LeadNoteRepository;
+use Reinventx\Leads\LeadRepository;
+use Reinventx\Leads\LeadStatuses;
+use Reinventx\Leads\LeadStatusService;
+use Reinventx\Setup\Capabilities;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * REST endpoints for the inbox: forminbox/v1/leads.
+ * REST endpoints for the inbox: reinventx-forms/v1/leads.
  *
  * Lead data is raw visitor input; these responses return it verbatim as
  * JSON (inert by definition) and the admin SPA renders it as text only.
  */
 final class LeadsController {
 
-	public const REST_NAMESPACE = 'forminbox/v1';
+	public const REST_NAMESPACE = 'reinventx-forms/v1';
 
 	private const MAX_PER_PAGE = 100;
 	private const MAX_NOTE     = 5000;
@@ -87,8 +87,8 @@ final class LeadsController {
 		}
 
 		return new WP_Error(
-			'forminbox_forbidden',
-			__( 'You are not allowed to manage FormInbox leads.', 'forminbox' ),
+			'rvtx_forbidden',
+			__( 'You are not allowed to manage Reinventx Forms leads.', 'reinventx-forms' ),
 			array( 'status' => rest_authorization_required_code() )
 		);
 	}
@@ -103,8 +103,8 @@ final class LeadsController {
 
 		if ( '' !== $status && ! LeadStatuses::isValid( $status ) ) {
 			return new WP_Error(
-				'forminbox_invalid_status',
-				__( 'Unknown lead status.', 'forminbox' ),
+				'rvtx_invalid_status',
+				__( 'Unknown lead status.', 'reinventx-forms' ),
 				array( 'status' => 400 )
 			);
 		}
@@ -148,8 +148,8 @@ final class LeadsController {
 
 		if ( ! is_string( $status ) || ! LeadStatuses::isValid( $status ) ) {
 			return new WP_Error(
-				'forminbox_invalid_status',
-				__( 'Unknown lead status.', 'forminbox' ),
+				'rvtx_invalid_status',
+				__( 'Unknown lead status.', 'reinventx-forms' ),
 				array( 'status' => 400 )
 			);
 		}
@@ -175,8 +175,8 @@ final class LeadsController {
 
 		if ( '' === $note || mb_strlen( $note ) > self::MAX_NOTE ) {
 			return new WP_Error(
-				'forminbox_invalid_note',
-				__( 'Notes must be between 1 and 5000 characters.', 'forminbox' ),
+				'rvtx_invalid_note',
+				__( 'Notes must be between 1 and 5000 characters.', 'reinventx-forms' ),
 				array( 'status' => 400 )
 			);
 		}
@@ -188,8 +188,8 @@ final class LeadsController {
 
 	private function notFound(): WP_Error {
 		return new WP_Error(
-			'forminbox_not_found',
-			__( 'Lead not found.', 'forminbox' ),
+			'rvtx_not_found',
+			__( 'Lead not found.', 'reinventx-forms' ),
 			array( 'status' => 404 )
 		);
 	}
@@ -306,7 +306,7 @@ final class LeadsController {
 		return array(
 			'id'         => $note->id,
 			'note'       => $note->note,
-			'author'     => false !== $user ? $user->display_name : __( 'Unknown user', 'forminbox' ),
+			'author'     => false !== $user ? $user->display_name : __( 'Unknown user', 'reinventx-forms' ),
 			'created_at' => $note->createdAt,
 		);
 	}

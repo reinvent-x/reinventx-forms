@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Forms;
+namespace Reinventx\Forms;
 
 /**
  * Lifecycle status of a form.

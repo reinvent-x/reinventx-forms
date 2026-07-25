@@ -1,6 +1,6 @@
-# FormInbox — Architecture
+# Reinventx Forms — Architecture
 
-This document records the architecture decisions for FormInbox and, more importantly,
+This document records the architecture decisions for Reinventx Forms and, more importantly,
 the reasoning behind them. Decisions here are binding until explicitly revisited.
 
 ---
@@ -16,7 +16,7 @@ package publishing.
 ### Why a multi-package monorepo is the wrong call today
 
 A monorepo earns its cost when there are **multiple deliverables sharing code**:
-free plugin + Pro plugin + SaaS backend + shared SDK. FormInbox v0.1 has exactly
+free plugin + Pro plugin + SaaS backend + shared SDK. Reinventx Forms v0.1 has exactly
 one deliverable. A workspace setup now would buy us:
 
 - versioning ceremony between packages nobody else consumes,
@@ -37,7 +37,7 @@ the actual product. Rejected without hesitation.
 The plugin repo is structured so that a future `packages/` split is mechanical,
 not a rewrite:
 
-- All PHP under one root namespace (`FormInbox\`) with strict module subnamespaces.
+- All PHP under one root namespace (`Reinventx\`) with strict module subnamespaces.
   Modules do not reach into each other's internals — they talk through service
   interfaces. A module that stays clean can be lifted into a package.
 - JS is split into independent entry points (`client/admin`, `client/public-form`)
@@ -49,15 +49,15 @@ not a rewrite:
 ## 2. Repository Structure
 
 ```
-forminbox/
-├── forminbox.php            # Bootstrap ONLY: header, constants, autoload, Plugin::boot()
+reinventx-forms/
+├── reinventx-forms.php            # Bootstrap ONLY: header, constants, autoload, Plugin::boot()
 ├── uninstall.php            # Delegates to Uninstaller; respects "delete data" opt-in
 ├── composer.json            # PSR-4 autoload + dev tooling. No runtime deps.
 ├── package.json             # @wordpress/scripts + TS. Two build entry points.
 ├── phpcs.xml.dist, phpstan.neon.dist, tsconfig.json, .editorconfig
 ├── .wp-env.json             # Local dev environment (Docker)
 ├── .distignore              # What never ships in the release ZIP
-├── src/                     # PHP — namespace FormInbox\
+├── src/                     # PHP — namespace Reinventx\
 │   ├── Plugin.php           # Composition root: builds container, registers modules
 │   ├── Support/             # Container (minimal), Hooks helper, shared value objects
 │   ├── Database/            # Schema definitions, Migrator, table name registry
@@ -70,7 +70,7 @@ forminbox/
 ├── client/
 │   ├── admin/               # React + TS SPA (forms editor, inbox, lead detail)
 │   ├── public-form/         # Vanilla TS: fetch submit, inline validation UI (~few KB)
-│   ├── blocks/forminbox-form/  # block.json + edit component (dynamic block)
+│   ├── blocks/rvtx-form/  # block.json + edit component (dynamic block)
 │   └── shared/              # Types shared across entries (Form, Lead, API payloads)
 ├── build/                   # Compiled assets (gitignored; included in release ZIP)
 ├── tests/
@@ -82,7 +82,7 @@ forminbox/
 
 Rules that keep this honest:
 
-- `forminbox.php` contains **no business logic** — it guards PHP/WP versions, loads
+- `reinventx-forms.php` contains **no business logic** — it guards PHP/WP versions, loads
   the autoloader, and boots `Plugin`. Everything else lives in `src/`.
 - `src/` modules register their own hooks via a shared registration pass in
   `Plugin::boot()`; no module calls `add_action` at file-load time.
@@ -109,7 +109,7 @@ Rules that keep this honest:
   implementing sanitize/validate/render. Adding a field type in 0.2+ means adding one
   class, not editing switch statements. This is the one piece of "framework" v0.1
   builds, because the product's core loop passes through it on every request.
-- **Domain events via WP hooks:** `forminbox_lead_created`, `forminbox_lead_status_changed`,
+- **Domain events via WP hooks:** `rvtx_lead_created`, `rvtx_lead_status_changed`,
   etc. These cost nothing now and are the entire future Pro/AI extension surface.
 
 ## 4. Frontend Design
@@ -120,7 +120,7 @@ Rules that keep this honest:
   solved problems we should not re-solve with a bespoke Vite setup that fights
   WordPress's script registration model).
 - UI: **shadcn/ui + Tailwind (v4), vendored, brand-black theme** — not
-  `@wordpress/components`. FormInbox is a product with its own identity; the stock
+  `@wordpress/components`. Reinventx Forms is a product with its own identity; the stock
   Gutenberg look was rejected (decision revised in M1.5, replacing the original
   `@wordpress/components` choice). shadcn components are copied into
   `client/admin/components/ui/` (they are source, not a dependency); their runtime
@@ -129,7 +129,7 @@ Rules that keep this honest:
   the admin bundle is no longer near-zero (size-guarded in CI instead), and
   accessibility comes from Radix rather than WP components.
   Non-negotiable isolation rules:
-  - Tailwind preflight and all utilities are **scoped to the `#forminbox-admin`
+  - Tailwind preflight and all utilities are **scoped to the `#rvtx-admin`
     container** — wp-admin chrome (admin bar, menu, notices) must be untouched.
   - Every Radix **portal mounts inside the container** (Dialog, Select, dropdowns),
     otherwise popovers render into `document.body` outside the scope and lose styling.
@@ -141,7 +141,7 @@ Rules that keep this honest:
   for strings remain WP-core externals. Inside the block editor (M4), the form-picker
   edit component still uses `@wordpress/components` — matching Gutenberg there is
   correct; the SPA and the block editor are different surfaces.
-- One admin page (`admin.php?page=forminbox`) hosting the SPA with lightweight
+- One admin page (`admin.php?page=reinventx-forms`) hosting the SPA with lightweight
   client-side routing (hash or memory router): Forms list → Form editor; Inbox →
   Lead detail. No react-router dependency unless routing outgrows ~5 screens.
 - Server passes boot data (REST root, nonce, current user caps, statuses list) via
@@ -160,11 +160,11 @@ would be an embarrassment and a real competitive weakness.
 
 ### Block strategy
 
-One **dynamic block** (`forminbox/form`): `block.json`, an edit component that lets
+One **dynamic block** (`reinventx-forms/form`): `block.json`, an edit component that lets
 the author pick a form (SelectControl fed by the REST forms endpoint, ServerSideRender
 preview), and a `render_callback` that is **the same renderer the shortcode uses**.
 No block-side markup serialization — form structure changes must never invalidate
-saved post content. The shortcode `[forminbox id="…"]` exists for classic-editor and
+saved post content. The shortcode `[rvtx_form id="…"]` exists for classic-editor and
 page-builder users and costs one thin wrapper around the same renderer.
 
 ## 5. Database Design
@@ -180,7 +180,7 @@ Custom tables. Not custom post types. The reasoning:
   and it's bounded.
 
 ```sql
-{prefix}forminbox_forms
+{prefix}rvtx_forms
   id            BIGINT UNSIGNED AUTO_INCREMENT PK
   name          VARCHAR(190) NOT NULL
   status        VARCHAR(20)  NOT NULL DEFAULT 'active'    -- active|archived
@@ -189,7 +189,7 @@ Custom tables. Not custom post types. The reasoning:
   updated_at    DATETIME     NOT NULL
   KEY status (status)
 
-{prefix}forminbox_leads
+{prefix}rvtx_leads
   id            BIGINT UNSIGNED AUTO_INCREMENT PK
   form_id       BIGINT UNSIGNED NOT NULL
   status        VARCHAR(20)  NOT NULL DEFAULT 'new'       -- new|contacted|qualified|won|lost|spam
@@ -203,7 +203,7 @@ Custom tables. Not custom post types. The reasoning:
   KEY form_status (form_id, status)
   KEY submitted_at (submitted_at)
 
-{prefix}forminbox_lead_notes
+{prefix}rvtx_lead_notes
   id            BIGINT UNSIGNED AUTO_INCREMENT PK
   lead_id       BIGINT UNSIGNED NOT NULL
   user_id       BIGINT UNSIGNED NOT NULL
@@ -225,24 +225,24 @@ Design notes:
 - **No foreign key constraints** (WordPress/dbDelta convention; MyISAM still exists
   in the wild). Referential integrity enforced in repositories; deletes cascade in
   application code inside a transaction where available.
-- **Migrations:** schema version stored in an option (`forminbox_schema_version`).
+- **Migrations:** schema version stored in an option (`rvtx_schema_version`).
   `Migrator` runs ordered migration steps on activation and on version bump
   (admin-triggered on upgrade, never on the public path). dbDelta for table
   creation; explicit SQL for later alters.
 
 ## 6. REST API Design
 
-Namespace: **`forminbox/v1`** — versioned from day one because a future Pro plugin
+Namespace: **`reinventx-forms/v1`** — versioned from day one because a future Pro plugin
 and SaaS bridge will consume it; breaking it must be a deliberate `v2`.
 
 | Route | Method | Auth | Purpose |
 |---|---|---|---|
-| `/forms` | GET/POST | cap: `forminbox_manage_forms` | List / create forms |
-| `/forms/{id}` | GET/PUT/DELETE | cap: `forminbox_manage_forms` | Read / update / archive |
-| `/leads` | GET | cap: `forminbox_manage_leads` | Paginated inbox; filters: form_id, status (search is post-0.1 backlog) |
-| `/leads/{id}` | GET | cap: `forminbox_manage_leads` | Lead detail incl. notes |
-| `/leads/{id}` | PATCH | cap: `forminbox_manage_leads` | Update status |
-| `/leads/{id}/notes` | POST | cap: `forminbox_manage_leads` | Add note |
+| `/forms` | GET/POST | cap: `rvtx_manage_forms` | List / create forms |
+| `/forms/{id}` | GET/PUT/DELETE | cap: `rvtx_manage_forms` | Read / update / archive |
+| `/leads` | GET | cap: `rvtx_manage_leads` | Paginated inbox; filters: form_id, status (search is post-0.1 backlog) |
+| `/leads/{id}` | GET | cap: `rvtx_manage_leads` | Lead detail incl. notes |
+| `/leads/{id}` | PATCH | cap: `rvtx_manage_leads` | Update status |
+| `/leads/{id}/notes` | POST | cap: `rvtx_manage_leads` | Add note |
 | `/submissions` | POST | **public** | Visitor submission (hardened, see §7) |
 
 - Admin routes authenticate via WordPress cookie + `X-WP-Nonce` (what `api-fetch`
@@ -253,12 +253,12 @@ and SaaS bridge will consume it; breaking it must be a deliberate `v2`.
   shape vs. business rules.
 - Responses are stable DTO shapes defined in one place per resource (shared TS types
   in `client/shared` mirror them).
-- Errors: `WP_Error` with meaningful codes (`forminbox_invalid_field`,
-  `forminbox_rate_limited`) — the public form script maps codes to inline messages.
+- Errors: `WP_Error` with meaningful codes (`rvtx_invalid_field`,
+  `rvtx_rate_limited`) — the public form script maps codes to inline messages.
 
 ## 7. Security Model
 
-- **Capabilities:** custom caps `forminbox_manage_forms`, `forminbox_manage_leads`,
+- **Capabilities:** custom caps `rvtx_manage_forms`, `rvtx_manage_leads`,
   granted to `administrator` on activation. Cheap now, painful to retrofit, and it
   lets 0.2+ offer role-based access (e.g., a "sales" role that sees the inbox but
   can't edit forms).
@@ -278,7 +278,7 @@ and SaaS bridge will consume it; breaking it must be a deliberate `v2`.
   controls, all server-side:
   - honeypot field (dropped from stored data, rejects on fill),
   - minimum-fill-time token (signed timestamp rendered with the form; too-fast = reject),
-  - per-IP rate limiting via transients (threshold filterable via `forminbox_rate_limit_max`),
+  - per-IP rate limiting via transients (threshold filterable via `rvtx_rate_limit_max`),
   - per-field length caps enforced by the field types; input keys not defined
     by the form are discarded, so accepted payloads are bounded by the form itself,
   - strict content-type check on the REST path.
@@ -289,7 +289,7 @@ and SaaS bridge will consume it; breaking it must be a deliberate `v2`.
   sanitized as URLs/text, stored, and always displayed escaped. It's lead intelligence,
   not audit data.
 - **Privacy:** IP stored as salted hash only, filterable to off via
-  `forminbox_store_ip_hash` (disabling it also disables per-client rate
+  `rvtx_store_ip_hash` (disabling it also disables per-client rate
   limiting, which keys on the hash); user agent truncated.
   Uninstall can fully purge. This posture keeps GDPR conversations short.
 
@@ -331,7 +331,7 @@ type has integration tests; every bug fix lands with a regression test.
   4. Assemble ZIP honoring `.distignore` (no `client/` sources, tests, configs, CI files).
   5. Smoke-check the ZIP: install & activate in a clean wp-env container.
   6. Attach ZIP to a GitHub Release. (WordPress.org SVN deploy step added if/when we list there.)
-- **Versioning:** SemVer. Plugin header, `FORMINBOX_VERSION` constant, and readme
+- **Versioning:** SemVer. Plugin header, `REINVENTX_VERSION` constant, and readme
   updated by a small release script so they can never drift.
 
 ## 10. Future Extensibility (designed for, not built)
@@ -342,7 +342,7 @@ an existing seam, so none requires re-architecture:
 | Future | Seam that already exists in v0.1 |
 |---|---|
 | Pro plugin (paid features) | Separate plugin consuming hooks + REST; base plugin never contains license code |
-| Email notifications / automation | `forminbox_lead_created` / `_status_changed` actions |
+| Email notifications / automation | `rvtx_lead_created` / `_status_changed` actions |
 | New field types (select, file, phone…) | Field type registry — one class per type |
 | AI lead scoring / summaries | Lead JSON payload + notes + a future `lead_meta` table; events to trigger enrichment |
 | SaaS sync / mobile app | Versioned REST API with stable DTOs |

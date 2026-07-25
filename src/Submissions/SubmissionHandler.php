@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Submissions;
+namespace Reinventx\Submissions;
 
-use FormInbox\Forms\FormRepository;
-use FormInbox\Forms\FormStatus;
-use FormInbox\Leads\LeadRepository;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Forms\FormStatus;
+use Reinventx\Leads\LeadRepository;
 
 /**
  * The one path a submission takes to storage, whatever transport carried
@@ -17,7 +17,7 @@ use FormInbox\Leads\LeadRepository;
  */
 final class SubmissionHandler {
 
-	public const HONEYPOT_FIELD = 'forminbox_website';
+	public const HONEYPOT_FIELD = 'rvtx_website';
 
 	public function __construct(
 		private readonly FormRepository $forms,
@@ -65,9 +65,9 @@ final class SubmissionHandler {
 		/**
 		 * Fires after a lead has been stored.
 		 *
-		 * @param \FormInbox\Leads\Lead $lead The stored lead.
+		 * @param \Reinventx\Leads\Lead $lead The stored lead.
 		 */
-		do_action( 'forminbox_lead_created', $lead );
+		do_action( 'rvtx_lead_created', $lead );
 
 		return SubmissionOutcome::created( $lead );
 	}

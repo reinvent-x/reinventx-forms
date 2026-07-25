@@ -1,4 +1,4 @@
-# FormInbox — Milestones to v0.1.0
+# Reinventx Forms — Milestones to v0.1.0
 
 Rules for every milestone:
 
@@ -19,7 +19,7 @@ Rules for every milestone:
 | M2 — Capture (public vertical) | **Complete** |
 | M3 — Inbox (leads, status, notes) | **Complete** |
 | M4 — Ship (block, hardening, release pipeline) | **Complete** |
-| Post-review fixes (`spam` status, `forminbox_store_ip_hash`, `forminbox_rate_limit_max`) | **Complete** — ship with v0.1.0 |
+| Post-review fixes (`spam` status, `rvtx_store_ip_hash`, `rvtx_rate_limit_max`) | **Complete** — ship with v0.1.0 |
 
 The v0.1.0 tag has not been created yet: it follows the final QA pass
 (`docs/RELEASING.md`), and the tag-triggered pipeline publishes the release.
@@ -39,9 +39,9 @@ run against each released ZIP.
 Repo scaffold, tooling, and the install/upgrade machinery everything else stands on.
 
 **Work:**
-- Repo init, plugin skeleton: `forminbox.php` (header, version/PHP/WP guards,
+- Repo init, plugin skeleton: `reinventx-forms.php` (header, version/PHP/WP guards,
   autoload, `Plugin::boot()`), `uninstall.php` stub.
-- Composer: PSR-4 `FormInbox\ => src/`, dev deps (PHPUnit, PHPStan + WP stubs,
+- Composer: PSR-4 `Reinventx\ => src/`, dev deps (PHPUnit, PHPStan + WP stubs,
   PHPCS + WordPress ruleset).
 - npm: `@wordpress/scripts`, TypeScript strict config, two entry points stubbed
   (`admin`, `public-form`).
@@ -55,7 +55,7 @@ Repo scaffold, tooling, and the install/upgrade machinery everything else stands
 
 **Acceptance criteria:**
 - [x] `npm run env:start && composer install && npm run build` yields a working local site.
-- [x] Activating the plugin creates all three tables; `forminbox_schema_version` option = 1.
+- [x] Activating the plugin creates all three tables; `rvtx_schema_version` option = 1.
 - [x] Re-activating is idempotent (no errors, no duplicate work).
 - [x] Deactivate + reactivate preserves data; uninstall without opt-in preserves data;
       uninstall with opt-in removes tables and options.
@@ -79,7 +79,7 @@ First user-visible slice: an admin can create a form. No public rendering yet.
   fields, required toggle, save via `api-fetch`).
 
 **Acceptance criteria:**
-- [x] "FormInbox" menu appears for administrators only; SPA loads with no console errors.
+- [x] "Reinventx Forms" menu appears for administrators only; SPA loads with no console errors.
 - [x] Admin can create a form with the three field types, edit it, and see it in the list.
 - [x] Deleting archives the form (status change), not a hard delete.
 - [x] REST: unauthenticated and non-privileged requests to form routes get 401/403
@@ -91,7 +91,7 @@ First user-visible slice: an admin can create a form. No public rendering yet.
 
 ## M1.5 — Admin design system: shadcn/ui + Tailwind (brand pass)
 
-Replace the placeholder wp-admin styling with FormInbox's own design system —
+Replace the placeholder wp-admin styling with Reinventx Forms's own design system —
 shadcn/ui on Tailwind, primary color black — so every screen from here on (M3's
 inbox is the big one) is built on the final primitives. Visual pass only: no new
 features, no behavior changes. Decision rationale and isolation rules in
@@ -108,7 +108,7 @@ ARCHITECTURE §4.
 - Theme: shadcn CSS variables in one theme file — primary black on a neutral gray
   scale, white surfaces, visible focus rings, light mode only (wp-admin has no
   dark mode). Components consume tokens; no hardcoded colors.
-- Style isolation: Tailwind preflight/utilities scoped to the `#forminbox-admin`
+- Style isolation: Tailwind preflight/utilities scoped to the `#rvtx-admin`
   container; every Radix portal (Dialog, Select popovers) mounts inside the
   container so overlays stay styled and wp-admin chrome stays untouched.
 - Restyle the two existing screens on the new kit: Forms list (Tabs for
@@ -135,14 +135,14 @@ The product becomes real: a visitor can submit a form and it lands in the databa
 
 **Work:**
 - `Rendering` module: server-side renderer from form config (escaped template
-  partials), shortcode `[forminbox id="…"]`; per-field HTML with labels, required
+  partials), shortcode `[rvtx_form id="…"]`; per-field HTML with labels, required
   attributes, error placeholders; hidden context inputs (page URL/title) + honeypot
   + signed timestamp token.
 - `public-form` TS script: intercept submit, POST JSON to REST, render inline
   field errors / success message; no-JS fallback path returns a server-rendered result.
 - REST `POST /submissions`: content-type checks, rate limiting, honeypot/time-trap,
   per-field sanitize→validate via the field registry, context capture (URL, title,
-  referrer, UA, IP hash), persist lead, fire `forminbox_lead_created`.
+  referrer, UA, IP hash), persist lead, fire `rvtx_lead_created`.
 
 **Acceptance criteria:**
 - [x] Shortcode on a page renders the form; page loads **zero React** and one small
@@ -162,7 +162,7 @@ The product becomes real: a visitor can submit a form and it lands in the databa
 
 **Work:**
 - `Leads` module completion: `LeadRepository` pagination/filtering, status
-  transition service (fires `forminbox_lead_status_changed`), notes.
+  transition service (fires `rvtx_lead_status_changed`), notes.
 - REST: `GET /leads` (paginate; filter by form, status), `GET /leads/{id}`,
   `PATCH /leads/{id}` (status), `POST /leads/{id}/notes`.
 - Admin SPA: **Inbox** screen (table: name-ish primary field, form, status badge,
@@ -209,7 +209,7 @@ The product becomes real: a visitor can submit a form and it lands in the databa
 
 ## Post-0.1 backlog (ordered candidates — not commitments)
 
-1. Email notification on new lead (`wp_mail` on `forminbox_lead_created`).
+1. Email notification on new lead (`wp_mail` on `rvtx_lead_created`).
 2. Playwright E2E covering the M4 demo path.
 3. Field types: select, checkbox, phone, hidden.
 4. Inbox search + bulk status actions.

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Forms\FieldTypes;
+namespace Reinventx\Forms\FieldTypes;
 
 /**
  * Single-line text. Control characters are stripped, whitespace trimmed.

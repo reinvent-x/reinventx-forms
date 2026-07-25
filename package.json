@@ -1,8 +1,9 @@
 {
-	"name": "forminbox",
+	"name": "reinventx-forms",
 	"version": "0.1.0",
 	"private": true,
 	"description": "Standalone form and lead management plugin for WordPress.",
+	"author": "Melad Samuel <meladsamuel2@gmail.com>",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
 		"build": "wp-scripts build",
@@ -10,10 +11,10 @@
 		"typecheck": "tsc --noEmit",
 		"lint:js": "wp-scripts lint-js client",
 		"format": "wp-scripts format client",
-		"env:start": "wp-env start && wp-env run cli wp plugin activate forminbox",
+		"env:start": "wp-env start && wp-env run cli wp plugin activate reinventx-forms",
 		"env:stop": "wp-env stop",
 		"env:destroy": "wp-env destroy",
-		"test:php": "wp-env run tests-cli --env-cwd=wp-content/plugins/forminbox vendor/bin/phpunit -c phpunit.integration.xml.dist"
+		"test:php": "wp-env run tests-cli --env-cwd=wp-content/plugins/reinventx-forms vendor/bin/phpunit -c phpunit.integration.xml.dist"
 	},
 	"devDependencies": {
 		"@radix-ui/react-dialog": "^1.1.4",

@@ -47,7 +47,7 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 			setError(
 				isApiError( e )
 					? e.message
-					: __( 'Could not load forms.', 'forminbox' )
+					: __( 'Could not load forms.', 'reinventx-forms' )
 			);
 		}
 	}, [ status ] );
@@ -70,7 +70,7 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 			setError(
 				isApiError( e )
 					? e.message
-					: __( 'Could not archive the form.', 'forminbox' )
+					: __( 'Could not archive the form.', 'reinventx-forms' )
 			);
 		}
 	};
@@ -86,17 +86,17 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 				>
 					<TabsList>
 						<TabsTrigger value="active">
-							{ __( 'Active', 'forminbox' ) }
+							{ __( 'Active', 'reinventx-forms' ) }
 						</TabsTrigger>
 						<TabsTrigger value="archived">
-							{ __( 'Archived', 'forminbox' ) }
+							{ __( 'Archived', 'reinventx-forms' ) }
 						</TabsTrigger>
 					</TabsList>
 				</Tabs>
 
 				<Button onClick={ onCreate }>
 					<Plus />
-					{ __( 'Add form', 'forminbox' ) }
+					{ __( 'Add form', 'reinventx-forms' ) }
 				</Button>
 			</div>
 
@@ -108,7 +108,7 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 
 			{ forms === null && ! error && (
 				<p className="text-muted-foreground">
-					{ __( 'Loading…', 'forminbox' ) }
+					{ __( 'Loading…', 'reinventx-forms' ) }
 				</p>
 			) }
 
@@ -118,9 +118,9 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 						{ status === 'active'
 							? __(
 									'No forms yet. Create your first form to start collecting leads.',
-									'forminbox'
+									'reinventx-forms'
 							  )
-							: __( 'No archived forms.', 'forminbox' ) }
+							: __( 'No archived forms.', 'reinventx-forms' ) }
 					</p>
 				</Card>
 			) }
@@ -131,16 +131,19 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 						<TableHeader>
 							<TableRow>
 								<TableHead>
-									{ __( 'Name', 'forminbox' ) }
+									{ __( 'Name', 'reinventx-forms' ) }
 								</TableHead>
 								<TableHead>
-									{ __( 'Fields', 'forminbox' ) }
+									{ __( 'Fields', 'reinventx-forms' ) }
 								</TableHead>
 								<TableHead>
-									{ __( 'Last updated (UTC)', 'forminbox' ) }
+									{ __(
+										'Last updated (UTC)',
+										'reinventx-forms'
+									) }
 								</TableHead>
 								<TableHead className="text-right">
-									{ __( 'Actions', 'forminbox' ) }
+									{ __( 'Actions', 'reinventx-forms' ) }
 								</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -156,7 +159,7 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 											>
 												{ __(
 													'Archived',
-													'forminbox'
+													'reinventx-forms'
 												) }
 											</Badge>
 										) }
@@ -177,7 +180,10 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 												}
 											>
 												<Pencil />
-												{ __( 'Edit', 'forminbox' ) }
+												{ __(
+													'Edit',
+													'reinventx-forms'
+												) }
 											</Button>
 											{ form.status === 'active' && (
 												<Button
@@ -190,7 +196,7 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 													<Archive />
 													{ __(
 														'Archive',
-														'forminbox'
+														'reinventx-forms'
 													) }
 												</Button>
 											) }
@@ -210,7 +216,7 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 				<DialogContent>
 					<DialogHeader>
 						<DialogTitle>
-							{ __( 'Archive this form?', 'forminbox' ) }
+							{ __( 'Archive this form?', 'reinventx-forms' ) }
 						</DialogTitle>
 						<DialogDescription>
 							{ archiving &&
@@ -218,7 +224,7 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 									/* translators: %s: form name. */
 									__(
 										'“%s” will stop accepting submissions. Its leads are kept and the form can still be edited later.',
-										'forminbox'
+										'reinventx-forms'
 									),
 									archiving.name
 								) }
@@ -229,13 +235,13 @@ export default function FormsList( { onCreate, onEdit }: Props ) {
 							variant="outline"
 							onClick={ () => setArchiving( null ) }
 						>
-							{ __( 'Cancel', 'forminbox' ) }
+							{ __( 'Cancel', 'reinventx-forms' ) }
 						</Button>
 						<Button
 							variant="destructive"
 							onClick={ confirmArchive }
 						>
-							{ __( 'Archive form', 'forminbox' ) }
+							{ __( 'Archive form', 'reinventx-forms' ) }
 						</Button>
 					</DialogFooter>
 				</DialogContent>

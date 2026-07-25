@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Database;
+namespace Reinventx\Database;
 
 /**
- * Single registry for FormInbox table names.
+ * Single registry for Reinventx Forms table names.
  *
  * Every query in the codebase must take table names from here — never build
  * them inline. Takes the prefix as a plain string so it stays testable
@@ -16,15 +16,15 @@ final class Tables {
 	}
 
 	public function forms(): string {
-		return $this->prefix . 'forminbox_forms';
+		return $this->prefix . 'rvtx_forms';
 	}
 
 	public function leads(): string {
-		return $this->prefix . 'forminbox_leads';
+		return $this->prefix . 'rvtx_leads';
 	}
 
 	public function leadNotes(): string {
-		return $this->prefix . 'forminbox_lead_notes';
+		return $this->prefix . 'rvtx_lead_notes';
 	}
 
 	/**

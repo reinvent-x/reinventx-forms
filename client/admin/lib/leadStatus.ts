@@ -13,17 +13,17 @@ import type { LeadStatus } from '@/types';
 export function leadStatusLabel( status: string ): string {
 	switch ( status ) {
 		case 'new':
-			return __( 'New', 'forminbox' );
+			return __( 'New', 'reinventx-forms' );
 		case 'contacted':
-			return __( 'Contacted', 'forminbox' );
+			return __( 'Contacted', 'reinventx-forms' );
 		case 'qualified':
-			return __( 'Qualified', 'forminbox' );
+			return __( 'Qualified', 'reinventx-forms' );
 		case 'won':
-			return __( 'Won', 'forminbox' );
+			return __( 'Won', 'reinventx-forms' );
 		case 'lost':
-			return __( 'Lost', 'forminbox' );
+			return __( 'Lost', 'reinventx-forms' );
 		case 'spam':
-			return __( 'Spam', 'forminbox' );
+			return __( 'Spam', 'reinventx-forms' );
 		default:
 			return status;
 	}

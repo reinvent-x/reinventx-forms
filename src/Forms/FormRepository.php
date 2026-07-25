@@ -4,10 +4,10 @@ declare(strict_types=1);
 // phpcs:disable WordPress.DB.DirectDatabaseQuery -- This repository is the
 // one sanctioned home for direct queries against the custom forms table.
 
-namespace FormInbox\Forms;
+namespace Reinventx\Forms;
 
-use FormInbox\Database\Tables;
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Database\Tables;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
 use wpdb;
 
 /**

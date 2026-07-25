@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Setup\Activator;
+use Reinventx\Setup\Activator;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
-final class FormsRestTest extends FormInboxTestCase {
+final class FormsRestTest extends ReinventxTestCase {
 
 	private WP_REST_Server $server;
 
@@ -79,32 +79,32 @@ final class FormsRestTest extends FormInboxTestCase {
 	public function testRoutesAreRegistered(): void {
 		$routes = $this->server->get_routes();
 
-		$this->assertArrayHasKey( '/forminbox/v1/forms', $routes );
-		$this->assertArrayHasKey( '/forminbox/v1/forms/(?P<id>\d+)', $routes );
+		$this->assertArrayHasKey( '/reinventx-forms/v1/forms', $routes );
+		$this->assertArrayHasKey( '/reinventx-forms/v1/forms/(?P<id>\d+)', $routes );
 	}
 
 	public function testLoggedOutRequestIsRejectedWithAuthStatus(): void {
 		wp_set_current_user( 0 );
 
-		$response = $this->request( 'GET', '/forminbox/v1/forms' );
+		$response = $this->request( 'GET', '/reinventx-forms/v1/forms' );
 
 		$this->assertSame( 401, $response->get_status() );
-		$this->assertSame( 'forminbox_forbidden', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_forbidden', $response->get_data()['code'] );
 	}
 
 	public function testUserWithoutCapabilityIsForbidden(): void {
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'subscriber' ) ) );
 
-		$response = $this->request( 'GET', '/forminbox/v1/forms' );
+		$response = $this->request( 'GET', '/reinventx-forms/v1/forms' );
 
 		$this->assertSame( 403, $response->get_status() );
-		$this->assertSame( 'forminbox_forbidden', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_forbidden', $response->get_data()['code'] );
 	}
 
 	public function testCreateAndFetchRoundTrip(): void {
 		$this->actAsAdmin();
 
-		$created = $this->request( 'POST', '/forminbox/v1/forms', $this->validPayload() );
+		$created = $this->request( 'POST', '/reinventx-forms/v1/forms', $this->validPayload() );
 
 		$this->assertSame( 201, $created->get_status() );
 
@@ -114,12 +114,12 @@ final class FormsRestTest extends FormInboxTestCase {
 		$this->assertSame( 'active', $data['status'] );
 		$this->assertSame( 'email', $data['config']['fields'][0]['id'] );
 
-		$fetched = $this->request( 'GET', '/forminbox/v1/forms/' . $data['id'] );
+		$fetched = $this->request( 'GET', '/reinventx-forms/v1/forms/' . $data['id'] );
 
 		$this->assertSame( 200, $fetched->get_status() );
 		$this->assertSame( $data['id'], $fetched->get_data()['id'] );
 
-		$listed = $this->request( 'GET', '/forminbox/v1/forms' );
+		$listed = $this->request( 'GET', '/reinventx-forms/v1/forms' );
 
 		$this->assertSame( 200, $listed->get_status() );
 		$this->assertCount( 1, $listed->get_data() );
@@ -132,10 +132,10 @@ final class FormsRestTest extends FormInboxTestCase {
 
 		$payload['config']['fields'][0]['type'] = 'checkbox';
 
-		$response = $this->request( 'POST', '/forminbox/v1/forms', $payload );
+		$response = $this->request( 'POST', '/reinventx-forms/v1/forms', $payload );
 
 		$this->assertSame( 400, $response->get_status() );
-		$this->assertSame( 'forminbox_invalid_config', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_invalid_config', $response->get_data()['code'] );
 		$this->assertSame( array( 'fields.0.type_unknown' ), $response->get_data()['data']['errors'] );
 	}
 
@@ -145,22 +145,22 @@ final class FormsRestTest extends FormInboxTestCase {
 		$payload         = $this->validPayload();
 		$payload['name'] = '   ';
 
-		$response = $this->request( 'POST', '/forminbox/v1/forms', $payload );
+		$response = $this->request( 'POST', '/reinventx-forms/v1/forms', $payload );
 
 		$this->assertSame( 400, $response->get_status() );
-		$this->assertSame( 'forminbox_invalid_name', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_invalid_name', $response->get_data()['code'] );
 	}
 
 	public function testUpdateChangesForm(): void {
 		$this->actAsAdmin();
 
-		$created = $this->request( 'POST', '/forminbox/v1/forms', $this->validPayload() );
+		$created = $this->request( 'POST', '/reinventx-forms/v1/forms', $this->validPayload() );
 		$id      = $created->get_data()['id'];
 
 		$payload         = $this->validPayload();
 		$payload['name'] = 'Renamed form';
 
-		$updated = $this->request( 'PUT', '/forminbox/v1/forms/' . $id, $payload );
+		$updated = $this->request( 'PUT', '/reinventx-forms/v1/forms/' . $id, $payload );
 
 		$this->assertSame( 200, $updated->get_status() );
 		$this->assertSame( 'Renamed form', $updated->get_data()['name'] );
@@ -169,27 +169,27 @@ final class FormsRestTest extends FormInboxTestCase {
 	public function testMissingFormReturns404(): void {
 		$this->actAsAdmin();
 
-		$response = $this->request( 'GET', '/forminbox/v1/forms/999999' );
+		$response = $this->request( 'GET', '/reinventx-forms/v1/forms/999999' );
 
 		$this->assertSame( 404, $response->get_status() );
-		$this->assertSame( 'forminbox_not_found', $response->get_data()['code'] );
+		$this->assertSame( 'rvtx_not_found', $response->get_data()['code'] );
 	}
 
 	public function testDeleteArchivesFormAndHidesItFromDefaultList(): void {
 		$this->actAsAdmin();
 
-		$created = $this->request( 'POST', '/forminbox/v1/forms', $this->validPayload() );
+		$created = $this->request( 'POST', '/reinventx-forms/v1/forms', $this->validPayload() );
 		$id      = $created->get_data()['id'];
 
-		$deleted = $this->request( 'DELETE', '/forminbox/v1/forms/' . $id );
+		$deleted = $this->request( 'DELETE', '/reinventx-forms/v1/forms/' . $id );
 
 		$this->assertSame( 200, $deleted->get_status() );
 		$this->assertTrue( $deleted->get_data()['archived'] );
 
-		$default_list = $this->request( 'GET', '/forminbox/v1/forms' );
+		$default_list = $this->request( 'GET', '/reinventx-forms/v1/forms' );
 		$this->assertCount( 0, $default_list->get_data() );
 
-		$archived_list = $this->request( 'GET', '/forminbox/v1/forms', null, array( 'status' => 'archived' ) );
+		$archived_list = $this->request( 'GET', '/reinventx-forms/v1/forms', null, array( 'status' => 'archived' ) );
 		$this->assertCount( 1, $archived_list->get_data() );
 		$this->assertSame( $id, $archived_list->get_data()[0]['id'] );
 	}

@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Rendering;
+namespace Reinventx\Rendering;
 
 /**
- * [forminbox id="…"] — the classic-editor / page-builder embedding path.
+ * [rvtx_form id="…"] — the classic-editor / page-builder embedding path.
  * A thin wrapper: FormEmbed does all the work, shared with the block.
  */
 final class Shortcode {
 
-	public const TAG = 'forminbox';
+	public const TAG = 'rvtx_form';
 
 	public function __construct( private readonly FormEmbed $embed ) {
 	}

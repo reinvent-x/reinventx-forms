@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Leads;
+namespace Reinventx\Leads;
 
 /**
  * A stored lead. Immutable snapshot of one row in the leads table.

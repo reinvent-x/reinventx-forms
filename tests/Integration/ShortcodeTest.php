@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace FormInbox\Tests\Integration;
+namespace Reinventx\Tests\Integration;
 
-use FormInbox\Forms\FieldTypes\FieldTypeRegistry;
-use FormInbox\Forms\Form;
-use FormInbox\Forms\FormConfig;
-use FormInbox\Forms\FormRepository;
-use FormInbox\Leads\Lead;
-use FormInbox\Plugin;
-use FormInbox\Setup\Activator;
-use FormInbox\Submissions\SubmissionToken;
+use Reinventx\Forms\FieldTypes\FieldTypeRegistry;
+use Reinventx\Forms\Form;
+use Reinventx\Forms\FormConfig;
+use Reinventx\Forms\FormRepository;
+use Reinventx\Leads\Lead;
+use Reinventx\Plugin;
+use Reinventx\Setup\Activator;
+use Reinventx\Submissions\SubmissionToken;
 
-final class ShortcodeTest extends FormInboxTestCase {
+final class ShortcodeTest extends ReinventxTestCase {
 
 	private FormRepository $forms;
 
@@ -63,7 +63,7 @@ final class ShortcodeTest extends FormInboxTestCase {
 	}
 
 	private function render(): string {
-		return do_shortcode( sprintf( '[forminbox id="%d"]', $this->form->id ) );
+		return do_shortcode( sprintf( '[rvtx_form id="%d"]', $this->form->id ) );
 	}
 
 	private function leadCount(): int {
@@ -78,21 +78,21 @@ final class ShortcodeTest extends FormInboxTestCase {
 	public function testRendersFormWithFieldsHoneypotAndToken(): void {
 		$html = $this->render();
 
-		$this->assertStringContainsString( '<form class="forminbox-form"', $html );
-		$this->assertStringContainsString( 'data-forminbox-form="' . $this->form->id . '"', $html );
+		$this->assertStringContainsString( '<form class="rvtx-form"', $html );
+		$this->assertStringContainsString( 'data-rvtx-form="' . $this->form->id . '"', $html );
 		$this->assertStringContainsString( 'Your name', $html );
 		$this->assertStringContainsString( 'type="email"', $html );
 		$this->assertStringContainsString( 'required aria-required="true"', $html );
-		$this->assertStringContainsString( 'name="forminbox_website"', $html );
-		$this->assertStringContainsString( 'name="forminbox_token"', $html );
-		$this->assertStringContainsString( 'name="forminbox_issued_at"', $html );
-		$this->assertStringContainsString( 'forminbox/v1/submissions', $html );
+		$this->assertStringContainsString( 'name="rvtx_website"', $html );
+		$this->assertStringContainsString( 'name="rvtx_token"', $html );
+		$this->assertStringContainsString( 'name="rvtx_issued_at"', $html );
+		$this->assertStringContainsString( 'reinventx-forms/v1/submissions', $html );
 	}
 
 	public function testMissingFormRendersNothingForVisitors(): void {
 		wp_set_current_user( 0 );
 
-		$this->assertSame( '', do_shortcode( '[forminbox id="999999"]' ) );
+		$this->assertSame( '', do_shortcode( '[rvtx_form id="999999"]' ) );
 	}
 
 	public function testArchivedFormRendersNothingForVisitors(): void {
@@ -113,7 +113,7 @@ final class ShortcodeTest extends FormInboxTestCase {
 		$html = $this->render();
 
 		$this->assertSame( 1, $this->leadCount() );
-		$this->assertStringContainsString( 'forminbox-success', $html );
+		$this->assertStringContainsString( 'rvtx-success', $html );
 		$this->assertStringNotContainsString( '<form', $html );
 	}
 
@@ -152,7 +152,7 @@ final class ShortcodeTest extends FormInboxTestCase {
 		$captured = null;
 
 		add_action(
-			'forminbox_lead_created',
+			'rvtx_lead_created',
 			static function ( Lead $lead ) use ( &$captured ) {
 				$captured = $lead;
 			}
@@ -166,7 +166,7 @@ final class ShortcodeTest extends FormInboxTestCase {
 	}
 
 	public function testNoJsPostRespectsIpHashPrivacyFilter(): void {
-		add_filter( 'forminbox_store_ip_hash', '__return_false' );
+		add_filter( 'rvtx_store_ip_hash', '__return_false' );
 
 		$captured = null;
 
@@ -174,7 +174,7 @@ final class ShortcodeTest extends FormInboxTestCase {
 			$captured = $lead;
 		};
 
-		add_action( 'forminbox_lead_created', $capture );
+		add_action( 'rvtx_lead_created', $capture );
 
 		$this->preparePost(
 			array(
@@ -187,7 +187,7 @@ final class ShortcodeTest extends FormInboxTestCase {
 
 		// The submission still succeeds end to end…
 		$this->assertSame( 1, $this->leadCount() );
-		$this->assertStringContainsString( 'forminbox-success', $html );
+		$this->assertStringContainsString( 'rvtx-success', $html );
 
 		// …but nothing IP-derived was stored.
 		$this->assertInstanceOf( Lead::class, $captured );
@@ -196,20 +196,20 @@ final class ShortcodeTest extends FormInboxTestCase {
 
 		// WP_UnitTestCase restores hooks between tests; remove explicitly
 		// anyway so this test leaks nothing even outside that safety net.
-		remove_filter( 'forminbox_store_ip_hash', '__return_false' );
-		remove_action( 'forminbox_lead_created', $capture );
+		remove_filter( 'rvtx_store_ip_hash', '__return_false' );
+		remove_action( 'rvtx_lead_created', $capture );
 	}
 
 	public function testHoneypotFilledPostRendersRejectionAndStoresNothing(): void {
 		$this->preparePost(
 			array( 'name' => 'Jane' ),
-			array( 'forminbox_website' => 'https://spam.example' )
+			array( 'rvtx_website' => 'https://spam.example' )
 		);
 
 		$html = $this->render();
 
 		$this->assertSame( 0, $this->leadCount() );
-		$this->assertStringContainsString( 'forminbox-message-error', $html );
+		$this->assertStringContainsString( 'rvtx-message-error', $html );
 	}
 
 	/**
@@ -223,12 +223,12 @@ final class ShortcodeTest extends FormInboxTestCase {
 
 		$_POST = array_merge(
 			array(
-				'forminbox_form_id'      => (string) $this->form->id,
-				'forminbox_issued_at'    => (string) $issued_at,
-				'forminbox_token'        => Plugin::submissionToken()->issue( $this->form->id, $issued_at ),
-				'forminbox_source_url'   => 'https://example.com/contact',
-				'forminbox_source_title' => 'Contact us',
-				'forminbox_fields'       => $fields,
+				'rvtx_form_id'      => (string) $this->form->id,
+				'rvtx_issued_at'    => (string) $issued_at,
+				'rvtx_token'        => Plugin::submissionToken()->issue( $this->form->id, $issued_at ),
+				'rvtx_source_url'   => 'https://example.com/contact',
+				'rvtx_source_title' => 'Contact us',
+				'rvtx_fields'       => $fields,
 			),
 			$extra
 		);
