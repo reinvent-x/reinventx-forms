@@ -62,4 +62,12 @@ final class LeadNoteRepository {
 			$rows ?: array()
 		);
 	}
+
+	/**
+	 * Drop every note attached to a lead. Used when the lead itself is
+	 * erased, so notes about a person never outlive the person's record.
+	 */
+	public function deleteForLead( int $lead_id ): int {
+		return (int) $this->db->delete( $this->tables->leadNotes(), array( 'lead_id' => $lead_id ), array( '%d' ) );
+	}
 }

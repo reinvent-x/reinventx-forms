@@ -49,7 +49,9 @@ final class SubmissionHandler {
 			return SubmissionOutcome::rejected();
 		}
 
-		if ( null !== $context->ipHash && ! $this->rate_limiter->allow( $context->ipHash ) ) {
+		// Keyed on rateLimitKey, not ipHash: the throttle must keep working
+		// on sites that opt out of storing the IP hash.
+		if ( null !== $context->rateLimitKey && ! $this->rate_limiter->allow( $context->rateLimitKey ) ) {
 			return SubmissionOutcome::rateLimited();
 		}
 

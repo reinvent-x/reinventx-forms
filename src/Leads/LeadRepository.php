@@ -109,6 +109,50 @@ final class LeadRepository {
 		);
 	}
 
+	/**
+	 * Leads holding $email in any submitted value, oldest first.
+	 *
+	 * The LIKE narrows candidates in SQL; the exact, case-insensitive match
+	 * happens in PHP against decoded values, so a lead is only returned when
+	 * a field actually equals the address rather than merely containing it.
+	 * Ordered by id so paging stays stable while an eraser deletes rows.
+	 *
+	 * @return array<int, Lead>
+	 */
+	public function findByEmail( string $email, int $limit, int $offset ): array {
+		$table = $this->tables->leads();
+
+		$rows = $this->db->get_results(
+			$this->db->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT * FROM {$table} WHERE data LIKE %s ORDER BY id ASC LIMIT %d OFFSET %d",
+				'%' . $this->db->esc_like( $email ) . '%',
+				max( 1, $limit ),
+				max( 0, $offset )
+			),
+			ARRAY_A
+		);
+
+		$leads = array();
+
+		foreach ( $rows ?: array() as $row ) {
+			$lead = $this->hydrate( $row );
+
+			foreach ( $lead->data as $value ) {
+				if ( 0 === strcasecmp( trim( $value ), $email ) ) {
+					$leads[] = $lead;
+					break;
+				}
+			}
+		}
+
+		return $leads;
+	}
+
+	public function delete( int $id ): bool {
+		return (bool) $this->db->delete( $this->tables->leads(), array( 'id' => $id ), array( '%d' ) );
+	}
+
 	public function updateStatus( int $id, string $status ): bool {
 		$updated = $this->db->update(
 			$this->tables->leads(),

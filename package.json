@@ -1,6 +1,6 @@
 {
     "name": "reinventx-forms",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": true,
     "description": "Standalone form and lead management plugin for WordPress.",
     "author": "Melad Samuel <meladsamuel2@gmail.com>",
@@ -18,7 +18,7 @@
         "env:destroy": "COMPOSE_PROJECT_NAME=reinventx-forms wp-env destroy",
         "env:plugin-check": "bin/plugin-check.sh",
         "env:plugin-check:report": "bin/plugin-check.sh > plugin-check-report.txt 2>&1",
-        "test:php": "wp-env run tests-cli --env-cwd=wp-content/plugins/reinventx-forms vendor/bin/phpunit -c phpunit.integration.xml.dist"
+        "test:php": "COMPOSE_PROJECT_NAME=reinventx-forms wp-env run tests-cli --env-cwd=wp-content/plugins/reinventx-forms vendor/bin/phpunit -c phpunit.integration.xml.dist"
     },
     "devDependencies": {
         "@radix-ui/react-dialog": "^1.1.4",

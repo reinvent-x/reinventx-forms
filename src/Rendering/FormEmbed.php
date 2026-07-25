@@ -104,15 +104,15 @@ final class FormEmbed {
 
 		/**
 		 * Filters whether a keyed hash of the visitor's IP is stored with the
-		 * lead. Return false to store nothing IP-derived at all — note that
-		 * per-client rate limiting is keyed on this hash, so disabling it
-		 * also disables rate limiting.
+		 * lead. Return false to persist nothing IP-derived on the lead row.
+		 *
+		 * Rate limiting is unaffected: it uses a separate hash, derived under
+		 * a different context and held only in a short-lived transient, so
+		 * opting out of IP storage does not weaken abuse protection.
 		 *
 		 * @param bool $store Default true.
 		 */
-		if ( ! apply_filters( 'rvtx_store_ip_hash', true ) ) {
-			$ip = null;
-		}
+		$store_ip_hash = (bool) apply_filters( 'rvtx_store_ip_hash', true );
 
 		$context = SubmissionContext::fromRaw(
 			esc_url_raw( $this->postString( 'rvtx_source_url' ) ),
@@ -120,7 +120,8 @@ final class FormEmbed {
 			isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( (string) $_SERVER['HTTP_REFERER'] ) ) : null,
 			isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( (string) $_SERVER['HTTP_USER_AGENT'] ) ) : null,
 			$ip,
-			wp_salt( 'auth' )
+			wp_salt( 'auth' ),
+			$store_ip_hash
 		);
 		// phpcs:enable
 
