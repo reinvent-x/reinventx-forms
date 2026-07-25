@@ -29,7 +29,7 @@ jobs:
         run: composer validate --strict
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
 
       - name: PHPCS
         run: composer lint
@@ -99,7 +99,7 @@ jobs:
           cache: pnpm
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
 
       - name: Install pnpm dependencies
         run: pnpm install --frozen-lockfile
