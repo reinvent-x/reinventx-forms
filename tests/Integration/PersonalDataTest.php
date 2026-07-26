@@ -122,6 +122,33 @@ final class PersonalDataTest extends ReinventxTestCase {
 		$this->assertCount( 1, $this->privacy->export( 'jane@example.com' )['data'] );
 	}
 
+	public function testExportNormalisesWhitespaceOnTheRequestedAddress(): void {
+		$this->lead( 'jane@example.com' );
+
+		$this->assertCount( 1, $this->privacy->export( '  jane@example.com  ' )['data'] );
+	}
+
+	public function testExportRejectsAnEmptyAddressRatherThanMatchingEverything(): void {
+		$this->lead( 'jane@example.com' );
+
+		$this->assertSame( array(), $this->privacy->export( '   ' )['data'] );
+	}
+
+	/**
+	 * Notes are erased with the lead, so they must be disclosed by the
+	 * export too — otherwise erasure destroys more than export reveals.
+	 */
+	public function testExportIncludesInternalNotes(): void {
+		$jane = $this->lead( 'jane@example.com' );
+
+		$this->notes->insert( $jane, 1, 'Called about the quote.' );
+
+		$item   = $this->privacy->export( 'jane@example.com' )['data'][0]['data'];
+		$values = implode( "\n", array_column( $item, 'value' ) );
+
+		$this->assertStringContainsString( 'Called about the quote.', $values );
+	}
+
 	/**
 	 * A lead merely containing the address as a substring is not that
 	 * person's record and must not be exported.

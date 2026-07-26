@@ -4,7 +4,7 @@ Tags: form, contact form, leads, lead management, crm
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,7 +69,7 @@ Raw IP addresses are never stored. The stored value is an HMAC hash, and it can 
 
 Referrer and source URLs are stored as the browser reports them. If pages on your site carry sensitive information in query strings, consider filtering or shortening what is recorded.
 
-Leads are integrated with WordPress's built-in privacy tools. Under Tools → Export Personal Data, a request for an email address returns every lead containing that address, including its form, submitted values, and source context. Under Tools → Erase Personal Data, those leads and any internal notes attached to them are deleted.
+Leads are integrated with WordPress's built-in privacy tools. Under Tools → Export Personal Data, a request for an email address returns every lead containing that address — its form, submitted values, source context, and any internal notes staff have attached to it. Under Tools → Erase Personal Data, those same leads and their notes are deleted outright rather than anonymised in place. Matching ignores letter case and surrounding whitespace.
 
 Site owners are responsible for describing this collection in their own privacy policy and for setting an appropriate retention practice.
 
@@ -83,6 +83,10 @@ Site owners are responsible for describing this collection in their own privacy 
 
 == Changelog ==
 
+= 0.1.2 =
+* Fixed: personal-data export now includes the internal notes attached to a lead. Erasure already deleted them, so the export was disclosing less than the eraser destroyed.
+* Fixed: an email address requested with surrounding whitespace now matches, and an empty address no longer reaches the matcher.
+
 = 0.1.1 =
 * Added: leads are now covered by WordPress's personal-data tools — Tools → Export Personal Data returns a person's leads, and Tools → Erase Personal Data deletes them along with any internal notes.
 * Fixed: returning false from `rvtx_store_ip_hash` no longer disables per-client rate limiting. Rate limiting now uses its own short-lived hash that is never stored, so opting out of IP storage is a privacy choice rather than a reduction in abuse protection.
@@ -93,6 +97,9 @@ Site owners are responsible for describing this collection in their own privacy 
 * Privacy and tuning filters: `rvtx_store_ip_hash` (return false to store nothing IP-derived; also disables per-client rate limiting, which keys on the hash) and `rvtx_rate_limit_max` (submissions-per-minute threshold).
 
 == Upgrade Notice ==
+
+= 0.1.2 =
+Personal-data export now includes internal notes, matching what erasure already deleted.
 
 = 0.1.1 =
 Adds WordPress personal-data export and erasure for leads, and fixes rate limiting being disabled when IP-hash storage is turned off.
