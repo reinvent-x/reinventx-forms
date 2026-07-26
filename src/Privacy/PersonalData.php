@@ -174,6 +174,24 @@ final class PersonalData {
 			}
 		}
 
+		// Notes are written by staff about the person, which makes them the
+		// person's data too. The eraser already deletes them, so withholding
+		// them from the export would disclose less than it destroys.
+		foreach ( $this->notes->forLead( $lead->id ) as $note ) {
+			$author = get_userdata( $note->userId );
+
+			$item[] = array(
+				'name'  => __( 'Internal note', 'reinventx-forms' ),
+				'value' => sprintf(
+					/* translators: 1: note text, 2: author display name, 3: note date. */
+					__( '%1$s — %2$s, %3$s', 'reinventx-forms' ),
+					$note->note,
+					false === $author ? (string) $note->userId : $author->display_name,
+					$note->createdAt
+				),
+			);
+		}
+
 		return $item;
 	}
 }

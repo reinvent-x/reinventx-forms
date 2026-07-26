@@ -3,7 +3,7 @@
  * Plugin Name:       Reinventx Forms
  * Plugin URI:        https://github.com/reinvent-x/reinventx-forms
  * Description:       Standalone form and lead management for WordPress — create forms, capture leads with source context, and track follow-up status.
- * Version:           0.1.1
+ * Version:           0.1.2
  * Requires at least: 6.6
  * Requires PHP:      8.1
  * Author:            Melad Samuel
@@ -41,7 +41,7 @@ if ( version_compare( PHP_VERSION, '8.1', '<' ) ) {
 	return;
 }
 
-define( 'REINVENTX_VERSION', '0.1.1' );
+define( 'REINVENTX_VERSION', '0.1.2' );
 define( 'REINVENTX_FILE', __FILE__ );
 
 $rvtx_autoload = __DIR__ . '/vendor/autoload.php';

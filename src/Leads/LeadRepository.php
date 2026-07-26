@@ -122,6 +122,14 @@ final class LeadRepository {
 	public function findByEmail( string $email, int $limit, int $offset ): array {
 		$table = $this->tables->leads();
 
+		// Normalise the requested address the same way stored values are
+		// compared, so a request arriving with stray whitespace still matches.
+		$email = trim( $email );
+
+		if ( '' === $email ) {
+			return array();
+		}
+
 		$rows = $this->db->get_results(
 			$this->db->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
