@@ -21,7 +21,7 @@
         "test:php": "COMPOSE_PROJECT_NAME=reinventx-forms wp-env run tests-cli --env-cwd=wp-content/plugins/reinventx-forms vendor/bin/phpunit -c phpunit.integration.xml.dist"
     },
     "devDependencies": {
-        "@radix-ui/react-dialog": "^1.1.4",
+        "@radix-ui/react-dialog": "^1.1.23",
         "@radix-ui/react-select": "^2.1.4",
         "@radix-ui/react-slot": "^1.1.1",
         "@radix-ui/react-switch": "^1.1.2",
