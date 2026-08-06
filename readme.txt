@@ -4,7 +4,7 @@ Tags: form, contact form, leads, lead management, crm
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.1.2
+Stable tag: 0.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ Site owners are responsible for describing this collection in their own privacy 
 5. Settings screen with the uninstall data-deletion option.
 
 == Changelog ==
+
+= 0.1.3 =
+* Changed: `Plugin URI` now points to the plugin's page on the owning domain rather than the source repository. The development repository is still linked from the Development section.
 
 = 0.1.2 =
 * Fixed: personal-data export now includes the internal notes attached to a lead. Erasure already deleted them, so the export was disclosing less than the eraser destroyed.

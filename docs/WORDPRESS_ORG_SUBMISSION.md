@@ -69,8 +69,36 @@ The reply to the plugins team must **explicitly request the new slug**
   it ships the built assets and the production autoloader.
 - WordPress.org reviewers can access the full source, build tools, and test
   suites at the GitHub repository above.
-- `Plugin URI` intentionally points to the public GitHub repo for now, until
-  the product domain is purchased.
+- `Plugin URI` points to https://forms.reinventx.com/. The plugins team
+  requires it to carry the owning entity's domain before the
+  `reinventx-forms` slug can be granted (see "Slug ownership" below).
+  A subdomain satisfies this; the ownership proof is still a TXT record at
+  the registrable root, not at the subdomain.
+
+## Slug ownership (2026-07-27)
+
+The plugins team held the `reinventx-forms` slug pending proof that the
+submitter controls the entity domain the name implies. A plugin named after
+an entity must demonstrate it is not trading on someone else's brand.
+
+Two things are required together:
+
+1. `Plugin URI` carries the entity domain (not a GitHub URL).
+2. Ownership of `reinventx.com` is verified.
+
+Verification is by TXT record at the domain root:
+
+    @  TXT  wordpressorg-meladsamuel-verification
+
+Alternatives the team accepts: a WordPress.org profile email under the
+domain, a new account created with such an address, or established plugins
+already in the directory under the same account. Renaming the plugin so it
+implies no entity affiliation is the fallback if ownership cannot be shown.
+
+**The domain must also serve the page `Plugin URI` points at.** Reviewers
+follow it. At the time of writing `reinventx.com` resolves in DNS and handles
+mail but returns nothing over HTTP, and `forms.reinventx.com` has no DNS
+record at all — both need to exist before the slug request is sent.
 
 ## Reviewer note: public form submissions
 
